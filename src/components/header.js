@@ -27,10 +27,9 @@ export default class Header extends React.Component{
                             <img src={require('../assests/Logo_white.png')} width='7%' height='7%' alt="logo"/> 
                         </Box>
                         
-                        <Button className={this.styles.button} color='inherit' >Botón 1</Button>
-                        <Button className={this.styles.button} color='inherit'>Botón 2</Button>
-                        <Button className={this.styles.button} color='inherit'>Botón 3</Button>
-                        <Button className={this.styles.button} color='inherit'>Botón 4</Button>
+                        <Button className={this.styles.button} color='inherit'>Pide aquí</Button>
+                        <Button className={this.styles.button} color='inherit'>Conocenos</Button>
+                        <Button className={this.styles.button} color='inherit'>Log in</Button>
                         
                     </Toolbar>
                 </AppBar>
