@@ -5,7 +5,6 @@ import Carousel from 'react-material-ui-carousel';
 import { makeStyles } from '@material-ui/core/styles';
 import './App.css';
 import { Grid, Box, Typography, Paper } from '@material-ui/core';
-
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
@@ -29,8 +28,9 @@ function App() {
   const classes = useStyles();
 
   return (
+    
     <div style={{backgroundColor:'#F2F2F2'}}>
-      <Header/>
+      <Header/> 
       <Carousel autoPlay={true} interval={5000}>
         {
           images.map(imag=>{
