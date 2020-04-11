@@ -3,14 +3,16 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import SignIn from './components/Login';
+import SignIn from './components/singin';
 import { Route, Link, BrowserRouter as Router } from 'react-router-dom';
+import SignUp from './components/signup';
 
     const routing = (
         <Router>
         <div>
             <Route exact path="/" component={App} />
             <Route path="/login" component={SignIn} />
+            <Route path="/signup" component={SignUp} />
         </div>
         </Router>
     )

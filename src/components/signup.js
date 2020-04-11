@@ -56,8 +56,11 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(3, 0, 2),
   },
 }));
+
 export default function SignIn() {
+
   const classes = useStyles();
+
   return (
     <Grid container component="main" className={classes.root}>
       <CssBaseline />
@@ -72,9 +75,31 @@ export default function SignIn() {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign in
+            Sign up
           </Typography>
           <form className={classes.form} noValidate>
+          <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              id="fname"
+              label="First Name"
+              name="fname"
+              autoComplete="fname"
+              autoFocus
+            />
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              id="lname"
+              label="Last Name"
+              name="lname"
+              autoComplete="lname"
+              
+            />
             <TextField
               variant="outlined"
               margin="normal"
@@ -84,7 +109,7 @@ export default function SignIn() {
               label="Email Address"
               name="email"
               autoComplete="email"
-              autoFocus
+              
             />
             <TextField
               variant="outlined"
@@ -97,10 +122,6 @@ export default function SignIn() {
               id="password"
               autoComplete="current-password"
             />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            />
             <Button
               type="submit"
               fullWidth
@@ -108,18 +129,13 @@ export default function SignIn() {
               color="primary"
               className={classes.submit}
             >
-              Sign In
+              Sign Up
             </Button>
-            <Grid container>
-              <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
-                </Link>
-              </Grid>
+            <Grid container>             
               <Grid item>
-                <Link href="#" variant="body2">
-                  {"Don't have an account? Sign Up"}
-                </Link>
+              <Link href="/login" variant="body2">
+                  {"Already have an account? Sign In"}
+              </Link>
               </Grid>
             </Grid>
             <Box mt={5}>
