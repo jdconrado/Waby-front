@@ -6,6 +6,7 @@ import * as serviceWorker from './serviceWorker';
 import SignIn from './components/singin';
 import { Route, Link, BrowserRouter as Router } from 'react-router-dom';
 import SignUp from './components/signup';
+import Orders from './components/orders';
 
     const routing = (
         <Router>
@@ -13,6 +14,7 @@ import SignUp from './components/signup';
             <Route exact path="/" component={App} />
             <Route path="/login" component={SignIn} />
             <Route path="/signup" component={SignUp} />
+            <Route path="/orders" component={Orders}/>
         </div>
         </Router>
     )
