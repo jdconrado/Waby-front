@@ -4,6 +4,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Route, Link, BrowserRouter as Router } from 'react-router-dom';
 
 export default class Header extends React.Component {
+    
     constructor(props) {
         super(props);
         this.styles = makeStyles(theme => ({
@@ -14,7 +15,7 @@ export default class Header extends React.Component {
                 backgroundColor: '#AF67E6'
             }
         }));
-        this.logged = false
+         this.logged = false
     }
 
     static defaultProps = {
