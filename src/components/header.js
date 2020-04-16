@@ -14,12 +14,33 @@ export default class Header extends React.Component {
                 backgroundColor: '#AF67E6'
             }
         }));
+        this.logged = false
     }
 
     static defaultProps = {
     }
 
     render() {
+        
+        let buttons
+
+        if (this.logged){
+            buttons =  [
+                [<Button className={this.styles.button} color='inherit' href = "/">Inicio</Button>],
+                [<Button className={this.styles.button} color='inherit'>Pide aquí</Button>],
+                [<Button className={this.styles.button} color='inherit'>Conocenos</Button>]
+            ]
+        } else {
+            buttons =  [
+                [<Button className={this.styles.button} color='inherit' href = "/">Inicio</Button>],
+                [<Button className={this.styles.button} color='inherit'>Pide aquí</Button>],
+                [<Button className={this.styles.button} color='inherit'>Conocenos</Button>], 
+                [<Button className={this.styles.button} color='inherit' href = "/login">Log in</Button>],              
+                [<Button className={this.styles.button} color='inherit' href = "/signup">Sign up</Button>]
+            ]
+      
+        }
+
         return (
             <div style={{ flexGrow: 1 }}>
                 <AppBar style={{ backgroundColor: '#AF67E6' }}>
@@ -28,20 +49,7 @@ export default class Header extends React.Component {
                             <img src={require('../assests/Logo_white.png')} width='7%' height='7%' alt="logo" />
                         </Box>
 
-                       
-
-                        <Button className={this.styles.button} color='inherit'>Pide aquí</Button>
-                        <Button className={this.styles.button} color='inherit'>Conocenos</Button>
-                        
-                        <Link to="/login">
-                        <Button className={this.styles.button} color='inherit'>Log in</Button>
-                        </Link>
-
-                        <Link to="/signup">
-                        <Button className={this.styles.button} color='inherit'>Sign up</Button>
-                        </Link>
-                        
-                        
+                      {buttons}
 
                     </Toolbar>
                 </AppBar>

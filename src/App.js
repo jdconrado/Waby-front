@@ -4,7 +4,8 @@ import Footer from './components/footer';
 import Carousel from 'react-material-ui-carousel';
 import { makeStyles } from '@material-ui/core/styles';
 import './App.css';
-import { Grid, Box, Typography, Paper } from '@material-ui/core';
+import { Grid, Box, Typography, Paper } from '@material-ui/core'
+
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
@@ -34,12 +35,12 @@ function App() {
       <Carousel autoPlay={true} interval={5000}>
         {
           images.map(imag=>{
-            return <img src={imag.image} alt={imag.alt} width='100%' height='100%'/>
+            return <img href = "/" src={imag.image} alt={imag.alt} width='100%' height='100%'/ >
           })
         }
       </Carousel>
 
-      <div className={classes.root} >
+      <div className={classes.root} style= {{padding: 40}}>
         <Grid container direction='row' justify='center' alignItems='center' spacing={10}>
           <Grid item xs={3}>
             <Paper className={classes.paper} direction='column'>

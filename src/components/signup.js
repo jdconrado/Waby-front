@@ -12,6 +12,7 @@ import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import Header from './header';
 
 function Copyright() {
   return (
@@ -62,88 +63,92 @@ export default function SignIn() {
   const classes = useStyles();
 
   return (
-    <Grid container component="main" className={classes.root}>
-      <CssBaseline />
-      <Grid item xs={12} sm={6}>
-        <Box>
-          <img src={require('../assests/Waby_screenpurple.png')} alt='c2' width='100%' height='100%' />
-        </Box>
-      </Grid>
-      <Grid item xs={12} sm={6} component={Paper} elevation={6} square>
-        <div className={classes.paper}>
-          <Avatar className={classes.avatar}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Sign up
+    <div style={{ backgroundColor: '#F2F2F2' }}>
+      <Header />
+      <Grid container component="main" className={classes.root}>
+
+        <CssBaseline />
+        <Grid item xs={6}>
+          <Box>
+            <img src={require('../assests/Waby_screenpurple.png')} alt='c2' width='100%' height='100%' />
+          </Box>
+        </Grid>
+        <Grid item xs={6} component={Paper} elevation={6} square>
+          <div className={classes.paper}>
+            <Avatar className={classes.avatar}>
+              <LockOutlinedIcon />
+            </Avatar>
+            <Typography component="h1" variant="h5">
+              Sign up
           </Typography>
-          <form className={classes.form} noValidate>
-          <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              id="fname"
-              label="First Name"
-              name="fname"
-              autoComplete="fname"
-              autoFocus
-            />
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              id="lname"
-              label="Last Name"
-              name="lname"
-              autoComplete="lname"
-              
-            />
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
-              
-            />
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="primary"
-              className={classes.submit}
-            >
-              Sign Up
+            <form className={classes.form} noValidate>
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                id="fname"
+                label="First Name"
+                name="fname"
+                autoComplete="fname"
+                autoFocus
+              />
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                id="lname"
+                label="Last Name"
+                name="lname"
+                autoComplete="lname"
+
+              />
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                id="email"
+                label="Email Address"
+                name="email"
+                autoComplete="email"
+
+              />
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                name="password"
+                label="Password"
+                type="password"
+                id="password"
+                autoComplete="current-password"
+              />
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="primary"
+                className={classes.submit}
+              >
+                Sign Up
             </Button>
-            <Grid container>             
-              <Grid item>
-              <Link href="/login" variant="body2">
-                  {"Already have an account? Sign In"}
-              </Link>
+              <Grid container>
+                <Grid item>
+                  <Link href="/login" variant="body2">
+                    {"Already have an account? Sign In"}
+                  </Link>
+                </Grid>
               </Grid>
-            </Grid>
-            <Box mt={5}>
-              <Copyright />
-            </Box>
-          </form>
-        </div>
+              <Box mt={5}>
+                <Copyright />
+              </Box>
+            </form>
+          </div>
+        </Grid>
       </Grid>
-    </Grid>
+    </div>
   );
 }
