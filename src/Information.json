@@ -3,42 +3,49 @@
 	  "id":0,
     "name":"Samule",
     "available":0,
-    "price":42.2
+    "price":42.2,
+    "type":"/300gr"
   },
   {
 	  "id":1,
     "name":"Sam",
     "available":21,
-    "price":42243.2
+    "price":42243,
+    "type":"/100ml"
   },
   {
 	  "id":2,
     "name":"Mark",
     "available":3,
-    "price":24523
+    "price":24523,
+    "type":""
   },
   {
 	  "id":3,
     "name":"Markus",
     "available":1,
-    "price":4302
+    "price":4302,
+    "type":"/10Kg"
   },
   {
   	"id":4,
     "name":"Aayush",
     "available":2,
-    "price":450
+    "price":450,
+    "type":""
   },
   {
 	  "id":5,
     "name":"Sean",
     "available":22,
-    "price":4200
+    "price":4200,
+    "type":""
   },
   {
   	"id":6,
     "name":"Eduardo",
     "available":25,
-    "price":3500
+    "price":3500,
+    "type":""
   }
 ]

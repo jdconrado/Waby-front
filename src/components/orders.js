@@ -16,6 +16,14 @@ import ListSubheader from '@material-ui/core/ListSubheader';
 import Divider from '@material-ui/core/Divider';
 import Container from '@material-ui/core/Container';
 import Header from './header'
+import Input from '@material-ui/core/Input';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -32,6 +40,9 @@ const useStyles = makeStyles((theme) => ({
       theme.palette.type === 'light' ? theme.palette.grey[50] : theme.palette.grey[900],
     backgroundSize: 'cover',
     backgroundPosition: 'center',
+  },
+  input: {
+    width: 42,
   },
   paper: {
     margin: theme.spacing(5, 0),
@@ -57,18 +68,199 @@ export default function Orders() {
   const classes = useStyles();
   const Information = data;
   const [price, setPrice] = React.useState(0)
-  const [checked, setChecked] = React.useState([1]);
+  const [checked, setChecked] = React.useState([]);
+  const [Info3, setInfo] = React.useState(Information);
+  const [tot, setTotal] = React.useState([]);
+  const [open, setOpen] = React.useState(false);
+  const [op, setOp] = React.useState(false);
 
-  const handleToggle = (value) => () => {
+  const handleInputChange = (event, i) => {
+    const total = [...tot];
+    const num = parseInt(Number(event.target.value));
+    var subs;
+    if (price < 0) {
+      setPrice(0);
+    }
+    if (num <= 10) {
+      if (num > total[checked[i].id]) {
+        if (total[checked[i].id].length == 0) {
+          subs = price + parseFloat(parseFloat(Information[checked[i].id].price * num).toFixed(2));
+          setPrice(subs);
+        } else {
+          if (total[checked[i].id] == num - 1) {
+            subs = price + parseFloat(parseFloat(Information[checked[i].id].price).toFixed(2));
+            setPrice(subs);
+          } else {
+            subs = price - parseFloat(parseFloat(Information[checked[i].id].price * total[checked[i].id]).toFixed(2)) + parseFloat(parseFloat(Information[checked[i].id].price * num).toFixed(2));
+            setPrice(subs)
+          }
+        }
+
+      } else if (num < total[checked[i].id] && price > 0) {
+        if (event.target.length == undefined) {
+          subs = price - parseFloat(parseFloat(Information[checked[i].id].price * total[checked[i].id]).toFixed(2));
+          if ((subs != 0 && total[checked[i].id] == 0) || price < 0) {
+            setPrice(0);
+          } else {
+            if (subs < 0) {
+              subs = 0;
+            } else {
+              subs = price - parseFloat(parseFloat(Information[checked[i].id].price).toFixed(2));
+            }
+            if (total[checked[i].id] == 10 && num == 1) {
+              subs = price - parseFloat(parseFloat(Information[checked[i].id].price * 9).toFixed(2))
+              setPrice(subs)
+            } else {
+              setPrice(subs);
+            }
+          }
+        } else {
+          subs = price - parseFloat(parseFloat(Information[checked[i].id].price).toFixed(2));
+          if (subs != 0 && total[checked[i].id] == 0) {
+            setPrice(0);
+          } else {
+            setPrice(subs);
+          }
+        }
+      }
+
+
+      total[checked[i].id] = event.target.value;
+      setTotal(total);
+    }
+  };
+
+  function str(string) {
+    return string.substring(1).replace(/[0-9]/g, '');
+  };
+
+  const handleRemove = (type, number, currentIndex) => {
+    var numb = type.match(/\d/g);
+    numb = numb.join("");
+    var fuckyou = parseFloat(parseFloat(price - parseFloat(parseFloat(Information[currentIndex].price * number / numb).toFixed(2))).toFixed(2));
+    setPrice(fuckyou);
+  };
+
+  const handleClick = () => {
+    if (price == 0) {
+      setOp(true);
+    } else {
+      setOpen(true);
+    }
+
+  }
+
+  const handleClose = () => {
+    if (op) {
+      setOp(false);
+    } else {
+      setOpen(false);
+    }
+  }
+
+  const handleAccept = () => {
+    var obj = {}
+    var amm = 0;
+    var info = []
+    var data = [info, amm];
+    obj.order=data;
+    obj.totalPrice=amm;
+    console.log(obj);
+    var i = 0;
+    checked.forEach(element => {
+      info=element;
+      amm=tot[element.id];
+      obj.order[i]={
+        'product':info,
+        'ammount':amm
+      };
+      i = i + 1;
+    });
+    console.log(obj);
+    obj.totalPrice = price;
+    var js = JSON.stringify(obj);
+    console.log(js);
+    setOpen(false);
+  }
+
+  const handleChange = (evt, type, i) => {
+    const total = [...tot];
+    var ev = evt.target.value;
+    var FUCKYOU;
+    var numb = type.match(/\d/g);
+    if (ev.length == 0) {
+      ev = 0;
+    }
+    if (numb == null) {
+      FUCKYOU = price + parseFloat(parseFloat(Information[checked[i].id].price).toFixed(2));
+      setPrice(FUCKYOU);
+    } else {
+      numb = numb.join("");
+      //ten en cuenta total = 0
+      if (ev == 0 && total[checked[i].id] != 0) {
+        FUCKYOU = price - parseFloat(parseFloat(Information[checked[i].id].price * total[checked[i].id] / numb).toFixed(2));
+        setPrice(FUCKYOU);
+      } else if (ev != total[checked[i].id] && total[checked[i]] == 0 && ev != 0) {
+        FUCKYOU = price + parseFloat(parseFloat(Information[checked[i].id].price * ev / numb).toFixed(2));
+        setPrice(FUCKYOU);
+      } else if (ev != total[checked[i].id] && ev != 0) {
+        FUCKYOU = price - parseFloat(parseFloat(Information[checked[i].id].price * total[checked[i].id] / numb).toFixed(2)) + parseFloat(parseFloat(Information[checked[i].id].price * ev / numb).toFixed(2));
+        setPrice(FUCKYOU);
+      }
+    }
+    total[checked[i].id] = ev;
+    setTotal(total);
+  };
+
+  const handleBlur = (i) => {
+    const total = [...tot];
+    if (total[checked[i].id] < 0) {
+      total[checked[i].id] = 0;
+      setTotal(total);
+    } else if (total[checked[i].id] > 10) {
+      total[checked[i].id] = 10;
+      setTotal(total);
+    }
+  };
+
+  const search = (event) => {
+    if (!event.target.value == '') {
+      var newInfo = [];
+      Information.forEach(element => {
+        if (element.name.toLowerCase().includes(event.target.value.toLowerCase())) {
+          newInfo.push(element);
+        }
+      });
+      setInfo(newInfo);
+    } else {
+      setInfo(Information);
+    }
+  };
+
+
+  const handleToggle = (value, i) => () => {
     const currentIndex = checked.indexOf(value);
     const newChecked = [...checked];
-
-    if (currentIndex === -1) {
+    const realInd = Information.indexOf(value);
+    var total = [...tot]
+    if (total.length == 0) {
+      var t;
+      (t = []).length = Information.length;
+      t.fill(0);
+      total = [...t];
+    }
+    if (currentIndex == -1) {
       newChecked.push(value);
-      setPrice(price + value.price);
+      setTotal(total)
     } else {
-      setPrice(price - checked[currentIndex].price);
       newChecked.splice(currentIndex, 1);
+      if (checked[currentIndex].type.length != 0) {
+        handleRemove(checked[currentIndex].type, total[realInd], realInd);
+      } else {
+        setPrice(price - checked[currentIndex].price * total[realInd]);
+      }
+      total[realInd] = 0;
+      setTotal(total);
     }
     setChecked(newChecked);
   };
@@ -89,26 +281,50 @@ export default function Orders() {
       <Grid>
         <CssBaseline />
         <Grid container item xs={12} spacing={0} >
-          <Grid className={classes.border} item xs={3}>
-            <List component="nav" aria-label="main mailbox folders" subheader={<ListSubheader>Tus ingredientes<Divider /></ListSubheader>}>{checked.map(function (info, i) {
-              return <div key={i}>
-                <ListItem >{info.name}</ListItem>
-              </div>
-            })}</List>
-          </Grid>
           <Grid className={classes.border} item xs={3} >
-            <List component="nav" aria-label="main mailbox folders" subheader={<ListSubheader>Ingredientes<Divider /></ListSubheader>} >{Information.map(function (info, i) {
+            <List component="nav" aria-label="main mailbox folders" subheader={<ListSubheader>Ingredientes <br /> <Input id="standard-basic" placeholder="Buscar" onChange={search} /> <Divider /> </ListSubheader>} >{Info3.map(function (info, i) {
               return <div key={i}>
                 <ListItem >
                   <ListItemText
                     primary={info.name}
-                    secondary={"Precio: $" + info.price} />
+                    secondary={"Precio: $" + info.price + info.type} />
                   <ListItemSecondaryAction>
                     <Checkbox
                       edge="end"
-                      onChange={handleToggle(info)}
+                      onChange={handleToggle(info, i)}
                       checked={checked.indexOf(info) !== -1}
                     />
+                  </ListItemSecondaryAction>
+                </ListItem>
+              </div>
+            })}</List>
+          </Grid>
+          <Grid className={classes.border} item xs={3}>
+            <List component="nav" aria-label="main mailbox folders" subheader={<ListSubheader>Tus ingredientes<Divider /></ListSubheader>}>{checked.map(function (info, i) {
+              return <div key={i}>
+                <ListItem >{info.name}
+                  <ListItemSecondaryAction>
+                    {info.type.length == 0 && <Input
+                      className={classes.input}
+                      value={tot[info.id]}
+                      margin="dense"
+                      onChange={(evt) => handleInputChange(evt, i)}
+                      onBlur={handleBlur(i)}
+                      inputProps={{
+                        step: 1,
+                        min: 0,
+                        max: 10,
+                        type: 'number',
+                        'aria-labelledby': 'input-slider',
+                      }}
+                    />}
+                    {info.type.length > 0 && <Input
+                      id="standard-adornment-weight"
+                      value={tot[checked[i].id]}
+                      className={classes.input}
+                      onChange={(evt) => handleChange(evt, info.type, i)}
+                      endAdornment={<InputAdornment position="end">{str(info.type)}</InputAdornment>}
+                    />}
                   </ListItemSecondaryAction>
                 </ListItem>
               </div>
@@ -129,9 +345,47 @@ export default function Orders() {
               <Grid item xs={3}>
                 <div>Total: ${price}</div>
               </Grid>
-              <Button variant="outlined" color="primary" size="medium">
+              <Button onClick={handleClick} variant="outlined" color="primary" size="medium">
                 Pedir
               </Button>
+              <Dialog
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description">
+                <DialogTitle id="alert-dialog-title">{"¿Quieres mandar la orden?"}</DialogTitle>
+                <DialogContent>
+                  <DialogContentText id="alert-dialog-description">
+                    Si estas seguro que la orden esta completa, dale en aceptar!
+                </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={handleClose} color="primary">
+                    Cancelar
+                 </Button>
+                  <Button onClick={handleAccept} color="primary" autoFocus>
+                    Aceptar
+                 </Button>
+                </DialogActions>
+              </Dialog>
+              <Dialog
+                open={op}
+                onClose={handleClose}
+                aria-labelledby="alert-dialog-slide-title"
+                aria-describedby="alert-dialog-slide-description"
+              >
+                <DialogTitle id="alert-dialog-slide-title">{"No has ordenado!"}</DialogTitle>
+                <DialogContent>
+                  <DialogContentText id="alert-dialog-slide-description">
+                    Primero tienes que ordenar para poder pedir!
+                </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={handleClose} color="primary">
+                    Cerrar
+                  </Button>
+                </DialogActions>
+              </Dialog>
             </Grid>
           </Grid>
         </Grid>
