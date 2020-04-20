@@ -73,6 +73,11 @@ export default function Orders() {
   const [tot, setTotal] = React.useState([]);
   const [open, setOpen] = React.useState(false);
   const [op, setOp] = React.useState(false);
+  const [descripcion, setDesc] = React.useState("");
+
+  const handleDesc = (event) => {
+    setDesc(event.target.value);
+  }
 
   const handleInputChange = (event, i) => {
     const total = [...tot];
@@ -160,26 +165,27 @@ export default function Orders() {
 
   const handleAccept = () => {
     var obj = {}
-    var amm = 0;
-    var info = []
-    var data = [info, amm];
-    obj.order=data;
-    obj.totalPrice=amm;
+    var cantidad = 0;
+    var ingId = []
+    var data = [ingId, cantidad];
+    var status = 'Creado';
+    obj.especificaciones = descripcion;
+    obj.data = data;
+    obj.precioTotal = cantidad;
     console.log(obj);
     var i = 0;
     checked.forEach(element => {
-      info=element;
-      amm=tot[element.id];
-      obj.order[i]={
-        'product':info,
-        'ammount':amm
+      ingId = element.id;
+      cantidad = tot[element.id];
+      obj.data[i] = {
+        'ingId': ingId,
+        'cantidad': cantidad
       };
       i = i + 1;
     });
-    console.log(obj);
-    obj.totalPrice = price;
+    obj.precioTotal = price;
+    obj.estado = status;
     var js = JSON.stringify(obj);
-    console.log(js);
     setOpen(false);
   }
 
@@ -196,7 +202,6 @@ export default function Orders() {
       setPrice(FUCKYOU);
     } else {
       numb = numb.join("");
-      //ten en cuenta total = 0
       if (ev == 0 && total[checked[i].id] != 0) {
         FUCKYOU = price - parseFloat(parseFloat(Information[checked[i].id].price * total[checked[i].id] / numb).toFixed(2));
         setPrice(FUCKYOU);
@@ -334,8 +339,8 @@ export default function Orders() {
             <div>
               <TextField
                 fullWidth
-                id="outlined-multiline-static"
                 label="¿Cómo lo quieres?"
+                onChange={(evt) => handleDesc(evt)}
                 multiline
                 rows={10}
                 variant="outlined"
