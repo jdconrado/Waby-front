@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
     height: '100vh',
   },
   image: {
-    backgroundImage: '../assests/Logo_white.png',
+    backgroundImage: '../assests/Waby_screenpurple.png',
     backgroundRepeat: 'no-repeat',
     backgroundColor:
       theme.palette.type === 'light' ? theme.palette.grey[50] : theme.palette.grey[900],
@@ -56,26 +56,22 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
-  bg: {
-    backgroundColor: theme.palette.grey
-  }
 }));
-
 export default function SignIn() {
 
   const classes = useStyles();
 
   return (
-    <div style={{ backgroundColor: '#F2F2F2' }}>
+    <div style={{ backgroundColor: '#AF67E6' }}>
       <Header />
-      <Grid container component="main" className={classes.root}>
+      <Grid container component="main" className={classes.root} alignItems="center" >
         <CssBaseline />
-        <Grid item xs={12} sm={6} className={classes.image}>
-          <Box>
-            <img src={require('../assests/Waby_screenpurple.png')} alt='c2' width='100%' height='100%' />
+        <Grid item xs={6}>
+          <Box display="flex" justifyContent="center" >
+            <img src={require('../assests/Logo_white.png')} alt='c2' width='50%' height='50%' />
           </Box>
         </Grid>
-        <Grid item xs={12} sm={6} component={Paper} elevation={6} square>
+        <Grid item xs={6} component={Paper} elevation={6} square style= {{padding: 60}}>
           <div className={classes.paper}>
             <Avatar className={classes.avatar}>
               <LockOutlinedIcon />

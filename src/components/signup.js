@@ -61,30 +61,7 @@ const useStyles = makeStyles((theme) => ({
 export default function SignUn() {
 
   const classes = useStyles();
-  /*const SignUp = () => {
-    var obj = {}
-    var amm = 0;
-    var info = []
-    var data = [info, amm];
-    obj.order=data;
-    obj.totalPrice=amm;
-    console.log(obj);
-    var i = 0;
-    checked.forEach(element => {
-      info=element;
-      amm=tot[element.id];
-      obj.order[i]={
-        'product':info,
-        'ammount':amm
-      };
-      i = i + 1;
-    });
-    console.log(obj);
-    obj.totalPrice = price;
-    var js = JSON.stringify(obj);
-    console.log(js);
-    setOpen(false);
-  }*/
+  
 
   const [name, setName] = React.useState("");
   const [lName, setLname] = React.useState("");
@@ -132,18 +109,17 @@ export default function SignUn() {
     });
     return response.json(); // parses JSON response into native JavaScript objects
   }
-  
+
 
 
   return (
-    <div style={{ backgroundColor: '#F2F2F2' }}>
+    <div style={{ backgroundColor: '#AF67E6' }}>
       <Header />
-      <Grid container component="main" className={classes.root}>
-
+      <Grid container component="main" className={classes.root} alignItems="center">
         <CssBaseline />
         <Grid item xs={6}>
-          <Box>
-            <img src={require('../assests/Waby_screenpurple.png')} alt='c2' width='100%' height='100%' />
+          <Box display="flex" justifyContent="center">
+            <img src={require('../assests/Logo_white.png')} alt='c2' width='50%' height='50%' />
           </Box>
         </Grid>
         <Grid item xs={6} component={Paper} elevation={6} square>
@@ -204,12 +180,12 @@ export default function SignUn() {
                 autoComplete="current-password"
               />
               <Button
-              
+
                 fullWidth
                 variant="contained"
                 color="primary"
                 onClick={enviarDatos}
-              
+
               >
                 Sign Up
             </Button>
