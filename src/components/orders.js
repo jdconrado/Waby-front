@@ -382,7 +382,7 @@ export default function Orders() {
                   <Button onClick={handleClose} color="primary">
                     Cancelar
                  </Button>
-                  <Button onClick={handleAccept} color="primary" autoFocus>
+                  <Button onClick={handleAccept} href="/" color="primary" autoFocus>
                     Aceptar
                  </Button>
                 </DialogActions>
