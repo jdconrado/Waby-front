@@ -34,7 +34,7 @@ export default class Header extends React.Component {
         } else {
             buttons =  [
                 [<Button className={this.styles.button} color='inherit' href = "/">Inicio</Button>],
-                [<Button className={this.styles.button} color='inherit' href= "/orders">Pide aquí</Button>],
+                [<Button className={this.styles.button} color='inherit' href= "/signup">Pide aquí</Button>],
                 [<Button className={this.styles.button} color='inherit'>Conocenos</Button>], 
                 [<Button className={this.styles.button} color='inherit' href = "/login">Log in</Button>],              
                 [<Button className={this.styles.button} color='inherit' href = "/signup">Sign up</Button>]
