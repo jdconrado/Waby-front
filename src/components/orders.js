@@ -184,7 +184,7 @@ export default function Orders() {
     console.log(obj);
     var js = JSON.stringify(obj);
     setOpen(false);
-    postData("https//localhost:8000/pedidos/crear", js);
+    postData('http//localhost:8000/pedidos/crear', js);
   }
   async function postData(url = '', data = {}) {
     const response = await fetch(url, {
