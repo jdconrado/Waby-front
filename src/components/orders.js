@@ -165,26 +165,22 @@ export default function Orders() {
 
   const handleAccept = () => {
     var obj = {}
-    var cantidad = 0;
-    var ingId = []
-    var data = [ingId, cantidad];
-    var status = 'Creado';
-    obj.especificaciones = descripcion;
-    obj.data = data;
-    obj.precioTotal = cantidad;
-    console.log(obj);
+    obj.data = {}
+    obj.data.especificaciones = descripcion;
+    obj.data.receta = [];
     var i = 0;
     checked.forEach(element => {
-      ingId = element.id;
-      cantidad = tot[element.id];
-      obj.data[i] = {
+      var ingId = element.id;
+      var cantidad = tot[element.id];
+      obj.data.receta.push({
         'ingId': ingId,
         'cantidad': cantidad
-      };
+      });
       i = i + 1;
     });
-    obj.precioTotal = price;
-    obj.estado = status;
+    obj.data.precioTotal = price;
+    obj.data.estado = 'Creado';
+    console.log(obj);
     var js = JSON.stringify(obj);
     setOpen(false);
     var url = 'http://localhost:8000/pedidos/crear';
