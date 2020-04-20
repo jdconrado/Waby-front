@@ -84,10 +84,11 @@ export default function SignUn() {
   const enviarDatos = () => {
 
     var obj = {};
-    obj.nombre = name;
-    obj.apellido = lName;
-    obj.email = email;
-    obj.password = password;
+    obj.data = {};
+    obj.data.nombre = name;
+    obj.data.apellido = lName;
+    obj.data.email = email;
+    obj.data.password = password;
     console.log(obj);
     var js = JSON.stringify(obj);
     var url = 'http://localhost:8000/usuarios/crear';
