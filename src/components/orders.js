@@ -66,7 +66,7 @@ const useStyles = makeStyles((theme) => ({
 export default function Orders() {
 
   const classes = useStyles();
-  const url = 'http//localhost:8000'
+  //const url = 'http//localhost:8000'
   const Information = data;
   const [price, setPrice] = React.useState(0)
   const [checked, setChecked] = React.useState([]);
@@ -184,7 +184,7 @@ export default function Orders() {
     console.log(obj);
     var js = JSON.stringify(obj);
     setOpen(false);
-    postData(url+"/pedidos/crear", js);
+    postData("https//localhost:8000/pedidos/crear", js);
   }
   async function postData(url = '', data = {}) {
     const response = await fetch(url, {
