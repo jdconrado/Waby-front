@@ -61,7 +61,60 @@ const useStyles = makeStyles((theme) => ({
 export default function SignUn() {
 
   const classes = useStyles();
+  /*const SignUp = () => {
+    var obj = {}
+    var amm = 0;
+    var info = []
+    var data = [info, amm];
+    obj.order=data;
+    obj.totalPrice=amm;
+    console.log(obj);
+    var i = 0;
+    checked.forEach(element => {
+      info=element;
+      amm=tot[element.id];
+      obj.order[i]={
+        'product':info,
+        'ammount':amm
+      };
+      i = i + 1;
+    });
+    console.log(obj);
+    obj.totalPrice = price;
+    var js = JSON.stringify(obj);
+    console.log(js);
+    setOpen(false);
+  }*/
 
+  const [name, setName] = React.useState("");
+  const [lName, setLname] = React.useState("");
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
+
+
+  const datosName = (event) => {
+    setName(event.target.value);
+  }
+  const datosLname = (event) => {
+    setLname(event.target.value);
+  }
+  const datosEmail = (event) => {
+    setEmail(event.target.value);
+  }
+  const datosPw = (event) => {
+    setPassword(event.target.value);
+  }
+  const enviarDatos = () => {
+
+    var obj = {};
+    obj.nombre = name;
+    obj.apellido = lName;
+    obj.email = email;
+    obj.password = password;
+    console.log(obj);
+    var js = JSON.stringify(obj);
+
+  }
   return (
     <div style={{ backgroundColor: '#F2F2F2' }}>
       <Header />
@@ -87,6 +140,7 @@ export default function SignUn() {
                 margin="normal"
                 required
                 fullWidth
+                onChange={(evt) => datosName(evt)}
                 id="fname"
                 label="First Name"
                 name="fname"
@@ -99,6 +153,7 @@ export default function SignUn() {
                 required
                 fullWidth
                 id="lname"
+                onChange={(evt) => datosLname(evt)}
                 label="Last Name"
                 name="lname"
                 autoComplete="lname"
@@ -110,6 +165,7 @@ export default function SignUn() {
                 required
                 fullWidth
                 id="email"
+                onChange={(evt) => datosEmail(evt)}
                 label="Email Address"
                 name="email"
                 autoComplete="email"
@@ -122,16 +178,18 @@ export default function SignUn() {
                 fullWidth
                 name="password"
                 label="Password"
+                onChange={(evt) => datosPw(evt)}
                 type="password"
                 id="password"
                 autoComplete="current-password"
               />
               <Button
-                type="submit"
+              
                 fullWidth
                 variant="contained"
                 color="primary"
-                className={classes.submit}
+                onClick={enviarDatos}
+              
               >
                 Sign Up
             </Button>
