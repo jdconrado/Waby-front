@@ -61,30 +61,6 @@ const useStyles = makeStyles((theme) => ({
 export default function SignUn() {
 
   const classes = useStyles();
-  /*const SignUp = () => {
-    var obj = {}
-    var amm = 0;
-    var info = []
-    var data = [info, amm];
-    obj.order=data;
-    obj.totalPrice=amm;
-    console.log(obj);
-    var i = 0;
-    checked.forEach(element => {
-      info=element;
-      amm=tot[element.id];
-      obj.order[i]={
-        'product':info,
-        'ammount':amm
-      };
-      i = i + 1;
-    });
-    console.log(obj);
-    obj.totalPrice = price;
-    var js = JSON.stringify(obj);
-    console.log(js);
-    setOpen(false);
-  }*/
 
   const [name, setName] = React.useState("");
   const [lName, setLname] = React.useState("");
@@ -107,10 +83,11 @@ export default function SignUn() {
   const enviarDatos = () => {
 
     var obj = {};
-    obj.nombre = name;
-    obj.apellido = lName;
-    obj.email = email;
-    obj.password = password;
+    obj.data = {};
+    obj.data.nombre = name;
+    obj.data.apellido = lName;
+    obj.data.email = email;
+    obj.data.password = password;
     console.log(obj);
     var js = JSON.stringify(obj);
     var url = 'http://localhost:8000/usuarios/crear';
