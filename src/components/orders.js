@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
@@ -9,7 +9,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Footer from './footer';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
-import data from '../Information.json'; //Until a good json is received
+//import data from '../Information.json'; //Until a good json is received
 import List from '@material-ui/core/List';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListSubheader from '@material-ui/core/ListSubheader';
@@ -63,66 +63,93 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+async function getInfo() {
+  const url = 'http://127.0.0.1:8000/ingredientes/getall'
+  const response = await fetch(url, {
+    method: 'GET', // *GET, POST, PUT, DELETE, etc.
+    mode: 'cors',
+    cache: 'no-cache',
+    credentials: 'same-origin',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    redirect: 'follow',
+    referrerPolicy: 'no-referrer'
+  }).then((res) => {
+    return res.json()
+  }).then((dat) => { return dat.result });
+  return response;
+}
+
 export default function Orders() {
 
   const classes = useStyles();
-  //const url = 'http//localhost:8000'
-  const Information = data;
+  const [Information, setInformation] = React.useState([]);
+  const [Info3, setInfo] = React.useState([Information]);
+  useEffect(() => {
+    getInfo().then((data) => {
+      setInformation(data);
+      setInfo(data);
+    })
+  }, [null])
   const [price, setPrice] = React.useState(0)
   const [checked, setChecked] = React.useState([]);
-  const [Info3, setInfo] = React.useState(Information);
   const [tot, setTotal] = React.useState([]);
   const [open, setOpen] = React.useState(false);
   const [op, setOp] = React.useState(false);
   const [descripcion, setDesc] = React.useState("");
+  const [Exceeded, setString] = React.useState("")
+  const [Alert, setAlert] = React.useState(false);
 
   const handleDesc = (event) => {
     setDesc(event.target.value);
   }
 
-  const handleInputChange = (event, i) => {
+  const handleInputChange = (event, id) => {
     const total = [...tot];
+    const i = Information.indexOf(id);
+    const ind = checked.indexOf(id);
     const num = parseInt(Number(event.target.value));
     var subs;
     if (price < 0) {
       setPrice(0);
     }
     if (num <= 10) {
-      if (num > total[checked[i].id]) {
-        if (total[checked[i].id].length == 0) {
-          subs = price + parseFloat(parseFloat(Information[checked[i].id].price * num).toFixed(2));
+      if (num > total[i]) {
+        if (total[i].length == 0) {
+          subs = price + parseFloat(parseFloat(checked[ind].precio * num).toFixed(2));
           setPrice(subs);
         } else {
-          if (total[checked[i].id] == num - 1) {
-            subs = price + parseFloat(parseFloat(Information[checked[i].id].price).toFixed(2));
+          if (total[i] == num - 1) {
+            subs = price + parseFloat(parseFloat(checked[ind].precio).toFixed(2));
             setPrice(subs);
           } else {
-            subs = price - parseFloat(parseFloat(Information[checked[i].id].price * total[checked[i].id]).toFixed(2)) + parseFloat(parseFloat(Information[checked[i].id].price * num).toFixed(2));
+            subs = price - parseFloat(parseFloat(checked[ind].precio * total[i]).toFixed(2)) + parseFloat(parseFloat(checked[ind].precio * num).toFixed(2));
             setPrice(subs)
           }
         }
 
-      } else if (num < total[checked[i].id] && price > 0) {
+      } else if (num < total[i] && price > 0) {
         if (event.target.length == undefined) {
-          subs = price - parseFloat(parseFloat(Information[checked[i].id].price * total[checked[i].id]).toFixed(2));
-          if ((subs != 0 && total[checked[i].id] == 0) || price < 0) {
+          subs = price - parseFloat(parseFloat(checked[ind].precio * total[i]).toFixed(2));
+          if ((subs != 0 && total[i] == 0) || price < 0) {
             setPrice(0);
           } else {
             if (subs < 0) {
               subs = 0;
             } else {
-              subs = price - parseFloat(parseFloat(Information[checked[i].id].price).toFixed(2));
+              subs = price - parseFloat(parseFloat(checked[ind].precio).toFixed(2));
             }
-            if (total[checked[i].id] == 10 && num == 1) {
-              subs = price - parseFloat(parseFloat(Information[checked[i].id].price * 9).toFixed(2))
+            if (total[i] == 10 && num == 1) {
+              subs = price - parseFloat(parseFloat(checked[ind].precio * 9).toFixed(2))
               setPrice(subs)
             } else {
               setPrice(subs);
             }
           }
         } else {
-          subs = price - parseFloat(parseFloat(Information[checked[i].id].price).toFixed(2));
-          if (subs != 0 && total[checked[i].id] == 0) {
+          subs = price - parseFloat(parseFloat(checked[ind].precio).toFixed(2));
+          if (subs != 0 && total[i] == 0) {
             setPrice(0);
           } else {
             setPrice(subs);
@@ -131,7 +158,7 @@ export default function Orders() {
       }
 
 
-      total[checked[i].id] = event.target.value;
+      total[i] = event.target.value;
       setTotal(total);
     }
   };
@@ -143,8 +170,8 @@ export default function Orders() {
   const handleRemove = (type, number, currentIndex) => {
     var numb = type.match(/\d/g);
     numb = numb.join("");
-    var fuckyou = parseFloat(parseFloat(price - parseFloat(parseFloat(Information[currentIndex].price * number / numb).toFixed(2))).toFixed(2));
-    setPrice(fuckyou);
+    var Valor = parseFloat(parseFloat(price - parseFloat(parseFloat(Information[currentIndex].precio * number / numb).toFixed(2))).toFixed(2));
+    setPrice(Valor);
   };
 
   const handleClick = () => {
@@ -170,9 +197,18 @@ export default function Orders() {
     obj.data.especificaciones = descripcion;
     obj.data.receta = [];
     var i = 0;
+    var sw = false;
     checked.forEach(element => {
       var ingId = element.id;
-      var cantidad = tot[element.id];
+      var index = Information.indexOf(element);
+      var cantidad = tot[index];
+      console.log(cantidad)
+      console.log(Information[index].stock)
+      if (cantidad > Information[index].stock) {
+        sw = true;
+        setString("Del item " + Information[index].nombre_ing + " solo puedes pedir un máximo de " + Information[index].stock + " unidades!")
+
+      }
       obj.data.receta.push({
         'ingId': ingId,
         'cantidad': cantidad
@@ -184,11 +220,36 @@ export default function Orders() {
     console.log(obj);
     var js = JSON.stringify(obj);
     setOpen(false);
-    postData('http//localhost:8000/pedidos/crear', js);
+    if (sw == false) {
+      redirData('http://127.0.0.1:8000/pedidos/crear', js, 'POST');
+      /* obj.data.receta.forEach(element => {
+        redirData('http://127.0.0.1:8000/ingredientes/actualizar/' + element.ingId, getIng(element.ingId, element.cantidad), 'PUT').then(console.log);
+      }) */
+      window.location.replace('http://127.0.0.1:3000/');
+    } else {
+      setAlert(true)
+    }
   }
-  async function postData(url = '', data = {}) {
+  const getIng = (id, stock) => {
+    Information.forEach(elemento => {
+      if (elemento.id == id) {
+        var obj = {};
+        obj.data = {}
+        obj.data = elemento;
+        obj.data.stock = obj.data.stock - stock;
+        var js = JSON.stringify(obj)
+        console.log(obj)
+        return obj;
+      }
+    })
+  }
+
+  const handleAlert = () => {
+    setAlert(false);
+  }
+  async function redirData(url = '', data = {}, type) {
     const response = await fetch(url, {
-      method: 'POST', // *GET, POST, PUT, DELETE, etc.
+      method: type, // *GET, POST, PUT, DELETE, etc.
       mode: 'cors', // no-cors, *cors, same-origin
       cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
       credentials: 'same-origin', // include, *same-origin, omit
@@ -203,41 +264,47 @@ export default function Orders() {
     return response.json(); // parses JSON response into native JavaScript objects
   }
 
-  const handleChange = (evt, type, i) => {
+  const handleChange = (evt, type, id) => {
+    const ind = Information.indexOf(id);
+    const i = checked.indexOf(id);
+    console.log(i)
     const total = [...tot];
+    console.log(tot);
+    console.log(checked)
     var ev = evt.target.value;
-    var FUCKYOU;
+    var Valor;
     var numb = type.match(/\d/g);
     if (ev.length == 0) {
       ev = 0;
     }
     if (numb == null) {
-      FUCKYOU = price + parseFloat(parseFloat(Information[checked[i].id].price).toFixed(2));
-      setPrice(FUCKYOU);
+      Valor = price + parseFloat(parseFloat(checked[i].precio).toFixed(2));
+      setPrice(Valor);
     } else {
       numb = numb.join("");
-      if (ev == 0 && total[checked[i].id] != 0) {
-        FUCKYOU = price - parseFloat(parseFloat(Information[checked[i].id].price * total[checked[i].id] / numb).toFixed(2));
-        setPrice(FUCKYOU);
-      } else if (ev != total[checked[i].id] && total[checked[i]] == 0 && ev != 0) {
-        FUCKYOU = price + parseFloat(parseFloat(Information[checked[i].id].price * ev / numb).toFixed(2));
-        setPrice(FUCKYOU);
-      } else if (ev != total[checked[i].id] && ev != 0) {
-        FUCKYOU = price - parseFloat(parseFloat(Information[checked[i].id].price * total[checked[i].id] / numb).toFixed(2)) + parseFloat(parseFloat(Information[checked[i].id].price * ev / numb).toFixed(2));
-        setPrice(FUCKYOU);
+      if (ev == 0 && total[ind] != 0) {
+        Valor = price - parseFloat(parseFloat(checked[i].precio * total[ind] / numb).toFixed(2));
+        setPrice(Valor);
+      } else if (ev != total[ind] && total[ind] == 0 && ev != 0) {
+        Valor = price + parseFloat(parseFloat(checked[i].precio * ev / numb).toFixed(2));
+        setPrice(Valor);
+      } else if (ev != total[ind] && ev != 0) {
+        Valor = price - parseFloat(parseFloat(checked[i].precio * total[ind] / numb).toFixed(2)) + parseFloat(parseFloat(checked[i].precio * ev / numb).toFixed(2));
+        setPrice(Valor);
       }
     }
-    total[checked[i].id] = ev;
+    total[ind] = ev;
     setTotal(total);
   };
 
-  const handleBlur = (i) => {
+  const handleBlur = (ind) => {
+    const i = Information.indexOf(ind);
     const total = [...tot];
-    if (total[checked[i].id] < 0) {
-      total[checked[i].id] = 0;
+    if (total[i] < 0) {
+      total[i] = 0;
       setTotal(total);
-    } else if (total[checked[i].id] > 10) {
-      total[checked[i].id] = 10;
+    } else if (total[i] > 10) {
+      total[i] = 10;
       setTotal(total);
     }
   };
@@ -246,7 +313,7 @@ export default function Orders() {
     if (!event.target.value == '') {
       var newInfo = [];
       Information.forEach(element => {
-        if (element.name.toLowerCase().includes(event.target.value.toLowerCase())) {
+        if (element.nombre_ing.toLowerCase().includes(event.target.value.toLowerCase())) {
           newInfo.push(element);
         }
       });
@@ -256,8 +323,8 @@ export default function Orders() {
     }
   };
 
-
   const handleToggle = (value, i) => () => {
+    console.log(value)
     const currentIndex = checked.indexOf(value);
     const newChecked = [...checked];
     const realInd = Information.indexOf(value);
@@ -273,10 +340,10 @@ export default function Orders() {
       setTotal(total)
     } else {
       newChecked.splice(currentIndex, 1);
-      if (checked[currentIndex].type.length != 0) {
-        handleRemove(checked[currentIndex].type, total[realInd], realInd);
+      if (checked[currentIndex].tipo.length > 3) {//Add null
+        handleRemove(checked[currentIndex].tipo, total[realInd], realInd);
       } else {
-        setPrice(price - checked[currentIndex].price * total[realInd]);
+        setPrice(price - checked[currentIndex].precio * total[realInd]);
       }
       total[realInd] = 0;
       setTotal(total);
@@ -305,8 +372,8 @@ export default function Orders() {
               return <div key={i}>
                 <ListItem >
                   <ListItemText
-                    primary={info.name}
-                    secondary={"Precio: $" + info.price + info.type} />
+                    primary={info.nombre_ing}
+                    secondary={"precio: $" + info.precio + info.tipo + "\n Cantidad: " + info.stock} />
                   <ListItemSecondaryAction>
                     <Checkbox
                       edge="end"
@@ -321,14 +388,14 @@ export default function Orders() {
           <Grid className={classes.border} item xs={3}>
             <List component="nav" aria-label="main mailbox folders" subheader={<ListSubheader>Tus ingredientes<Divider /></ListSubheader>}>{checked.map(function (info, i) {
               return <div key={i}>
-                <ListItem >{info.name}
+                <ListItem >{info.nombre_ing}
                   <ListItemSecondaryAction>
-                    {info.type.length == 0 && <Input
+                    {info.tipo.length == 3 && <Input //null
                       className={classes.input}
-                      value={tot[info.id]}
+                      value={tot[Information.indexOf(info)]}
                       margin="dense"
-                      onChange={(evt) => handleInputChange(evt, i)}
-                      onBlur={handleBlur(i)}
+                      onChange={(evt) => handleInputChange(evt, info)}
+                      onBlur={handleBlur(info)}
                       inputProps={{
                         step: 1,
                         min: 0,
@@ -337,12 +404,12 @@ export default function Orders() {
                         'aria-labelledby': 'input-slider',
                       }}
                     />}
-                    {info.type.length > 0 && <Input
+                    {info.tipo.length > 3 && <Input //null
                       id="standard-adornment-weight"
-                      value={tot[checked[i].id]}
+                      value={tot[Information.indexOf(info)]}
                       className={classes.input}
-                      onChange={(evt) => handleChange(evt, info.type, i)}
-                      endAdornment={<InputAdornment position="end">{str(info.type)}</InputAdornment>}
+                      onChange={(evt) => handleChange(evt, info.tipo, info)}
+                      endAdornment={<InputAdornment position="end">{str(info.tipo)}</InputAdornment>}
                     />}
                   </ListItemSecondaryAction>
                 </ListItem>
@@ -382,7 +449,7 @@ export default function Orders() {
                   <Button onClick={handleClose} color="primary">
                     Cancelar
                  </Button>
-                  <Button onClick={handleAccept} href="/" color="primary" autoFocus>
+                  <Button onClick={handleAccept} color="primary" autoFocus>
                     Aceptar
                  </Button>
                 </DialogActions>
@@ -401,6 +468,24 @@ export default function Orders() {
                 </DialogContent>
                 <DialogActions>
                   <Button onClick={handleClose} color="primary">
+                    Cerrar
+                  </Button>
+                </DialogActions>
+              </Dialog>
+              <Dialog
+                open={Alert}
+                onClose={handleAlert}
+                aria-labelledby="alert-dialog-slide-title"
+                aria-describedby="alert-dialog-slide-description"
+              >
+                <DialogTitle id="alert-dialog-slide-title">{"Te has excedido!"}</DialogTitle>
+                <DialogContent>
+                  <DialogContentText id="alert-dialog-slide-description">
+                    {Exceeded}
+                  </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={handleAlert} color="primary">
                     Cerrar
                   </Button>
                 </DialogActions>
