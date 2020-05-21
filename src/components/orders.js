@@ -197,17 +197,14 @@ export default function Orders() {
     obj.data.especificaciones = descripcion;
     obj.data.receta = [];
     var i = 0;
-    var sw = false;
+    var exceed = false;
     checked.forEach(element => {
       var ingId = element.id;
       var index = Information.indexOf(element);
       var cantidad = tot[index];
-      console.log(cantidad)
-      console.log(Information[index].stock)
       if (cantidad > Information[index].stock) {
-        sw = true;
-        setString("Del item " + Information[index].nombre_ing + " solo puedes pedir un máximo de " + Information[index].stock + " unidades!")
-
+        exceed = true;
+        setString("Del item " + Information[index].nombre_ing + " solo puedes pedir un máximo de " + Information[index].stock + " unidades!");
       }
       obj.data.receta.push({
         'ingId': ingId,
@@ -217,33 +214,35 @@ export default function Orders() {
     });
     obj.data.precioTotal = price;
     obj.data.estado = 'Creado';
-    console.log(obj);
     var js = JSON.stringify(obj);
     setOpen(false);
-    if (sw == false) {
-      redirData('http://127.0.0.1:8000/pedidos/crear', js, 'POST');
-      /* obj.data.receta.forEach(element => {
-        redirData('http://127.0.0.1:8000/ingredientes/actualizar/' + element.ingId, getIng(element.ingId, element.cantidad), 'PUT').then(console.log);
-      }) */
-      window.location.replace('http://127.0.0.1:3000/');
+    if (exceed == false) {
+      if (descripcion.length == 0) {
+        setOp(true);
+      } else {
+        redirData('http://127.0.0.1:8000/pedidos/crear', js, 'POST');
+        obj.data.receta.forEach(element => {
+          redirData('http://127.0.0.1:8000/ingredientes/actualizar/' + element.ingId, getIng(element.ingId, element.cantidad), 'PUT');
+        })
+        window.location.replace('http://127.0.0.1:3000/');
+      }
     } else {
       setAlert(true)
     }
   }
   const getIng = (id, stock) => {
+    var obj = {}
+    obj.data = {};
+    var js;
     Information.forEach(elemento => {
       if (elemento.id == id) {
-        var obj = {};
-        obj.data = {}
         obj.data = elemento;
         obj.data.stock = obj.data.stock - stock;
-        var js = JSON.stringify(obj)
-        console.log(obj)
-        return obj;
       }
     })
+    js = JSON.stringify(obj)
+    return js;
   }
-
   const handleAlert = () => {
     setAlert(false);
   }
@@ -267,10 +266,7 @@ export default function Orders() {
   const handleChange = (evt, type, id) => {
     const ind = Information.indexOf(id);
     const i = checked.indexOf(id);
-    console.log(i)
     const total = [...tot];
-    console.log(tot);
-    console.log(checked)
     var ev = evt.target.value;
     var Valor;
     var numb = type.match(/\d/g);
@@ -324,7 +320,6 @@ export default function Orders() {
   };
 
   const handleToggle = (value, i) => () => {
-    console.log(value)
     const currentIndex = checked.indexOf(value);
     const newChecked = [...checked];
     const realInd = Information.indexOf(value);
@@ -460,10 +455,10 @@ export default function Orders() {
                 aria-labelledby="alert-dialog-slide-title"
                 aria-describedby="alert-dialog-slide-description"
               >
-                <DialogTitle id="alert-dialog-slide-title">{"No has ordenado!"}</DialogTitle>
+                <DialogTitle id="alert-dialog-slide-title">{"No has terminado!"}</DialogTitle>
                 <DialogContent>
                   <DialogContentText id="alert-dialog-slide-description">
-                    Primero tienes que ordenar para poder pedir!
+                    Primero tienes que elegir los ingredientes y llenar todos los campos para poder pedir!
                 </DialogContentText>
                 </DialogContent>
                 <DialogActions>
