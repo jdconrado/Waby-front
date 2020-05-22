@@ -7,6 +7,8 @@ import SignIn from './components/singin';
 import { Route, Link, BrowserRouter as Router } from 'react-router-dom';
 import SignUp from './components/signup';
 import Orders from './components/orders';
+import Admin from './components/admin';
+import Historial from './components/historial';
 
     const routing = (
         <Router>
@@ -15,6 +17,8 @@ import Orders from './components/orders';
             <Route path="/login" component={SignIn} />
             <Route path="/signup" component={SignUp} />
             <Route path="/orders" component={Orders}/>
+            <Route path="/admin/ingredientes" component={Admin}/>
+            <Route path ="/user/historial" component={Historial}/>
         </div>
         </Router>
     )

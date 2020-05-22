@@ -9,7 +9,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import Footer from './footer';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
-//import data from '../Information.json'; //Until a good json is received
 import List from '@material-ui/core/List';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListSubheader from '@material-ui/core/ListSubheader';
