@@ -29,7 +29,7 @@ function Copyright() {
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    height: '100vh',
+    height: '90vh',
   },
   image: {
     backgroundImage: '../assests/Waby_screenpurple.png',
@@ -57,50 +57,9 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(3, 0, 2),
   },
 }));
-export default function SignIn() {
+export default function Profile() {
 
   const classes = useStyles();
-
-  const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
-
-  const datosEmail = (event) => {
-    setEmail(event.target.value);
-  }
-  const datosPw = (event) => {
-    setPassword(event.target.value);
-  }
-  const enviarDatos = () => {
-
-    var obj = {};
-    obj.data = {};
-    obj.data.email = email;
-    obj.data.password = password;
-    console.log(obj);
-    var js = JSON.stringify(obj);
-    var url = 'http://localhost:8000/usuarios/login';
-    sendData(url, js);
-  }
-
-  async function sendData(url = '', data = {}) {
-    
-    const response = await fetch(url, {
-      method: 'POST', // *GET, POST, PUT, DELETE, etc.
-      mode: 'cors', // no-cors, *cors, same-origin
-      cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-      credentials: 'same-origin', // include, *same-origin, omit
-      headers: {
-        'Content-Type': 'application/json'
-        // 'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      redirect: 'follow', // manual, *follow, error
-      referrerPolicy: 'no-referrer',
-      body: data // body data type must match "Content-Type" header
-    });
-    return response.json(); // parses JSON response into native JavaScript objects
-  
-  }
-
 
   return (
     <div style={{ backgroundColor: '#AF67E6' }}>
@@ -112,14 +71,9 @@ export default function SignIn() {
             <img src={require('../assests/Logo_white.png')} alt='c2' width='50%' height='50%' />
           </Box>
         </Grid>
-        <Grid item xs={6} component={Paper} elevation={6} square style= {{padding: 60}}>
+        <Grid item xs={6} component={Paper} elevation={6} square style= {{padding: 100}}>
           <div className={classes.paper}>
-            <Avatar className={classes.avatar}>
-              <LockOutlinedIcon />
-            </Avatar>
-            <Typography component="h1" variant="h5">
-              Sign in
-          </Typography>
+           
             <form className={classes.form} noValidate>
               <TextField
                 variant="outlined"
@@ -128,7 +82,6 @@ export default function SignIn() {
                 fullWidth
                 id="email"
                 label="Email Address"
-                onChange={(evt) => datosEmail(evt)}
                 name="email"
                 autoComplete="email"
                 autoFocus
@@ -140,7 +93,6 @@ export default function SignIn() {
                 fullWidth
                 name="password"
                 label="Password"
-                onChange={(evt) => datosPw(evt)}
                 type="password"
                 id="password"
                 autoComplete="current-password"
@@ -152,27 +104,10 @@ export default function SignIn() {
                 variant="contained"
                 color="primary"
                 className={classes.submit}
-                
-                onClick={enviarDatos}
+                href="/"
               >
-
-                Sign In
+                Actualizar datos
             </Button>
-              <Grid container>
-                <Grid item xs>
-                  <Link href="#" variant="body2">
-                    Forgot password?
-                </Link>
-                </Grid>
-                <Grid item>
-                  <Link href="/signup" variant="body2">
-                    {"Don't have an account? Sign Up"}
-                  </Link>
-                </Grid>
-              </Grid>
-              <Box mt={5}>
-                <Copyright />
-              </Box>
             </form>
           </div>
         </Grid>

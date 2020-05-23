@@ -85,8 +85,8 @@ export default function SignUn() {
 
     var obj = {};
     obj.data = {};
-    obj.data.nombre = name;
-    obj.data.apellido = lName;
+    obj.data.name = name;
+    obj.data.lastname = lName;
     obj.data.email = email;
     obj.data.password = password;
     console.log(obj);
@@ -185,9 +185,9 @@ export default function SignUn() {
                 fullWidth
                 variant="contained"
                 color="primary"
-                href="/orders"
+                
                 onClick={enviarDatos}
-                href="/orders"
+              
               >
                 Sign Up
             </Button>

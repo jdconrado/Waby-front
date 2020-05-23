@@ -9,6 +9,7 @@ import SignUp from './components/signup';
 import Orders from './components/orders';
 import Admin from './components/admin';
 import Historial from './components/historial';
+import Profile from './components/profile';
 
     const routing = (
         <Router>
@@ -18,8 +19,10 @@ import Historial from './components/historial';
             <Route path="/signup" component={SignUp} />
             <Route path="/orders" component={Orders}/>
             <Route path="/admin/ingredientes" component={Admin}/>
-            <Route path ="/user/historial" component={Historial}/>
-        </div>
+            <Route path ="/userr/:id" component={Profile}/>
+            <Route path ="/user/historial" component={Historial} />
+            
+        </div> 
         </Router>
     )
 ReactDOM.render(routing, document.getElementById('root'));

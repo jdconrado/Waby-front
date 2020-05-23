@@ -15,7 +15,7 @@ export default class Header extends React.Component {
                 backgroundColor: '#AF67E6'
             }
         }));
-         this.logged = false
+         this.logged = true
     }
 
     static defaultProps = {
@@ -24,12 +24,14 @@ export default class Header extends React.Component {
     render() {
         
         let buttons
-
+        let id = 5;
         if (this.logged){
             buttons =  [
                 [<Button className={this.styles.button} color='inherit' href = "/">Inicio</Button>],
                 [<Button className={this.styles.button} color='inherit'>Pide aquí</Button>],
-                [<Button className={this.styles.button} color='inherit'>Conocenos</Button>]
+                [<Button className={this.styles.button} color='inherit'>Conocenos</Button>],
+                [<Button className={this.styles.button} color='inherit' href =  {`/user/${id}`}>
+                PERFIL </Button>],
             ]
         } else {
             buttons =  [
