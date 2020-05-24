@@ -30,9 +30,8 @@ async function getInfo(url = '', type) {
 }
 
 export default function Historial() {
-    console.log(window.location)
     const [Information, setInformation] = React.useState([]); //Pedidos
-    const [Lista, setLista] = React.useState([]);
+    const [Lista, setLista] = React.useState();
     const [Ingredientes, setIngredientes] = React.useState([]);
     const [id, setId] = React.useState();
     useEffect(() => {
@@ -41,24 +40,25 @@ export default function Historial() {
         getInfo('ingredientes/getall', 'GET').then((data) => {
             setIngredientes(data);
         })
-        var li = [];
+        var li = {};
         getInfo('usuarios/getid/' + token, 'POST').then((data) => {
             getInfo('pedidos/getPedido/'+data, 'GET').then((data) => {
                 setInformation(data);
-                console.log(data);
+                var i=0;
                 data.forEach(elemento => {
                     getInfo('ingredientes/getlista/' + elemento.id, 'GET').then((data) => {
-                        li.push(data);
-                    })
+                        li[i]=data;
+                        i++;
+                    }   )
                 })
             })
-
+            
             setLista(li);
 
         })
     }, [null])
     const getProp = (id, type) => {
-        var name;
+        var name="";
         Ingredientes.forEach(element => {
             if (element.id == id) {
                 if (type == 0) {
@@ -101,7 +101,7 @@ export default function Historial() {
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    {Lista[rowData.id - 1].map((row) => (
+                                    {Lista[rowData.tableData.id].map((row) => (
                                         <TableRow key={row.id}>
                                             <TableCell component="th" scope="row">
                                                 {getProp(row.ingred, 0)}
