@@ -92,7 +92,9 @@ export default function SignUn() {
     console.log(obj);
     var js = JSON.stringify(obj);
     var url = 'http://localhost:8000/usuarios/crear';
-    postData(url, js);
+    postData(url, js).then((response)=>{
+      localStorage('id',response.result)
+    });
   }
   async function postData(url = '', data = {}) {
     const response = await fetch(url, {

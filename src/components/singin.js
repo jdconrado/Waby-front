@@ -79,7 +79,9 @@ export default function SignIn() {
     console.log(obj);
     var js = JSON.stringify(obj);
     var url = 'http://localhost:8000/usuarios/login';
-    sendData(url, js).then(console.log);
+    sendData(url, js).then((response)=>{
+      localStorage.setItem('id', response.result);
+    });
   }
 
   async function sendData(url = '', data = {}) {
