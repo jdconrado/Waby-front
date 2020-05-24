@@ -2,9 +2,6 @@ import React from 'react';
 import { AppBar, Toolbar, Button, Box } from '@material-ui/core';
 import { makeStyles } from "@material-ui/core/styles";
 import { Route, Link, BrowserRouter as Router } from 'react-router-dom';
-
-
-
 async function url(url = '') {
     const response = await fetch(url, {
         method: 'POST', // *GET, POST, PUT, DELETE, etc.
@@ -19,9 +16,7 @@ async function url(url = '') {
         referrerPolicy: 'no-referrer',
     });
     return response.json(); // parses JSON response into native JavaScript objects
-
 }
-
 export default class Header extends React.Component {
 
     constructor(props) {
@@ -79,9 +74,9 @@ export default class Header extends React.Component {
             console.log(this.state.id)
             buttons = [
                 [<Button className={this.styles.button} color='inherit' href="/">Inicio</Button>],
-                [<Button className={this.styles.button} color='inherit'>Pide aquí</Button>],
+                [<Button className={this.styles.button} color='inherit' href="/orders">Pide aquí</Button>],
                 [<Button className={this.styles.button} color='inherit'>Conocenos</Button>],
-                [<Button className={this.styles.button} color='inherit' href={`/userr/${this.state.id}`}>
+                [<Button className={this.styles.button} color='inherit' href={`/user/${this.state.id}`}>
                     PERFIL </Button>],
                 [<Button className={this.styles.button} color='inherit' onClick={this.logOut}>Cerrar sesión</Button>],
             ]

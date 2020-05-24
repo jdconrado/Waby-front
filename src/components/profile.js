@@ -14,7 +14,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Header from './header';
 import Modal from '@material-ui/core/Modal';
-import useEffect from 'react';
+import {useEffect} from 'react';
 
 function Copyright() {
   return (
@@ -68,9 +68,9 @@ export default function Profile() {
 
 
 
-  const [name, setName] = React.useState("Moise");
-  const [lName, setLname] = React.useState("Brayan");
-  const [email, setEmail] = React.useState("Juancho@hotmail.com");
+  const [name, setName] = React.useState("");
+  const [lName, setLname] = React.useState("");
+  const [email, setEmail] = React.useState("");
 
   const datosName = (event) => {
     setName(event.target.value);
@@ -83,7 +83,6 @@ export default function Profile() {
   }
 
   const enviarDatos = () => {
-
     var obj = {};
     obj.data = {};
     obj.data.name = name;
@@ -91,7 +90,7 @@ export default function Profile() {
     obj.data.email = email;
     console.log(obj);
     var js = JSON.stringify(obj);
-    var url = 'http://localhost:8000/usuarios/crear';
+  // var url = 'http://localhost:8000/usuarios/crear';
     //  updateData(url, js);
   }
   /* async function updateData(url = '', data = {}) {
@@ -117,15 +116,24 @@ export default function Profile() {
   const [disable, setDisable] = React.useState(true);
   const handleDisable = () => {
     setDisable(true);
+    enviarDatos();
   };
   const handleAble = () => {
     setDisable(false);
   };
 
-
+  const [id,setId] = React.useState("");
   useEffect(() => {
-    let token = localStorage.getItem["id"];
-    componentDidMount(`http://127.0.0.1:8000/usuarios/getid/${token}`,'POST')
+    let token = localStorage.getItem("id");
+
+    componentDidMount(`http://127.0.0.1:8000/usuarios/getid/${token}`,'POST').then((res)=>
+    {setId(res.result); componentDidMount(`http://127.0.0.1:8000/usuarios/getUser/${res.result}`,'GET').then((res)=>
+    { 
+      setName(res.result.name);
+      setLname(res.result.lastname);
+      setEmail(res.result.email);
+      console.log(res.result.name);
+    })})
 
   }, [null])
 
@@ -143,7 +151,6 @@ export default function Profile() {
     }).then((res) => {
       return res.json()
     }); return response;
-
   }
 
 
@@ -167,7 +174,8 @@ export default function Profile() {
                   margin="normal"
                   required
                   fullWidth
-                  defaultValue={name}
+                  value = {name}
+                  //defaultValue={name}
                   id="name"
                   label="name"
                   name="name"
@@ -183,38 +191,28 @@ export default function Profile() {
                   fullWidth
                   id="lname"
                   label="Apellido"
-                  defaultValue={lName}
+                  value = {lName}
+                  // defaultValue={lName}
                   name="lname"
                   autoComplete="Last name"
                   autoFocus
                 />
 
                 <TextField
-                  defaultValue={email}
+                //  defaultValue={email}
                   variant="outlined"
                   disabled
                   margin="normal"
                   required
                   fullWidth
                   id="email"
+                  value = {email}
                   label="Email Address"
                   name="email"
                   autoComplete="email"
                   autoFocus
                 />
-                <TextField
-                  defaultValue="..."
-                  variant="outlined"
-                  disabled
-                  margin="normal"
-                  required
-                  fullWidth
-                  name="password"
-                  label="id"
-                  type="password"
-                  id="password"
-                  autoComplete="current-password"
-                />
+               
                 <Grid container component="main" className={classes.root} alignItems="center" >
                   <Grid item xs={6}>
                     <Button
@@ -231,7 +229,7 @@ export default function Profile() {
                       variant="contained"
                       color="primary"
                       className={classes.submit}
-                      href={`/userr//historial`}
+                      href={`/user/${id}/historial`}
                     >
                       Historial de pedidos
                    </Button>
@@ -282,18 +280,7 @@ export default function Profile() {
                   autoComplete="email"
                   autoFocus
                 />
-                <TextField
-                  defaultValue="..."
-                  variant="outlined"
-                  margin="normal"
-                  required
-                  fullWidth
-                  name="password"
-                  label="id"
-                  type="password"
-                  id="password"
-                  autoComplete="current-password"
-                />
+                
                 <Grid container component="main" className={classes.root} alignItems="center" >
                   <Grid item xs={6}>
                     <Button
@@ -301,6 +288,7 @@ export default function Profile() {
                       color="primary"
                       className={classes.submit}
                       onClick={handleDisable}
+                   
                     >
                       Confirmar información
                     </Button>
@@ -310,7 +298,7 @@ export default function Profile() {
                       variant="contained"
                       color="primary"
                       className={classes.submit}
-                      href={`/userr//historial`}
+                      href={`/user/${id}/historial`}
                     >
                       Historial de pedidos
                    </Button>

@@ -5,11 +5,11 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-
-async function getInfo(url = '') {
+import Header from './header';
+async function getInfo(url = '', type) {
     const nurl = 'http://127.0.0.1:8000/' + url
     const response = await fetch(nurl, {
-        method: 'GET', // *GET, POST, PUT, DELETE, etc.
+        method: type, // *GET, POST, PUT, DELETE, etc.
         mode: 'cors',
         cache: 'no-cache',
         credentials: 'same-origin',
@@ -34,20 +34,28 @@ export default function Historial() {
     const [Information, setInformation] = React.useState([]); //Pedidos
     const [Lista, setLista] = React.useState([]);
     const [Ingredientes, setIngredientes] = React.useState([]);
+    const [id, setId] = React.useState();
     useEffect(() => {
-        getInfo('ingredientes/getall').then((data) => {
+
+        let token = localStorage.getItem("id");
+        getInfo('ingredientes/getall', 'GET').then((data) => {
             setIngredientes(data);
         })
         var li = [];
-        getInfo('pedidos/getall').then((data) => {
-            setInformation(data);
-            data.forEach(elemento => {
-                getInfo('ingredientes/getlista/' + elemento.id).then((data) => {
-                    li.push(data);
+        getInfo('usuarios/getid/' + token, 'POST').then((data) => {
+            getInfo('pedidos/getPedido/'+data, 'GET').then((data) => {
+                setInformation(data);
+                console.log(data);
+                data.forEach(elemento => {
+                    getInfo('ingredientes/getlista/' + elemento.id, 'GET').then((data) => {
+                        li.push(data);
+                    })
                 })
             })
+
+            setLista(li);
+
         })
-        setLista(li);
     }, [null])
     const getProp = (id, type) => {
         var name;
@@ -55,8 +63,8 @@ export default function Historial() {
             if (element.id == id) {
                 if (type == 0) {
                     name = element.nombre_ing;
-                }else{
-                    name=element.tipo
+                } else {
+                    name = element.tipo
                 }
             }
         })
@@ -69,6 +77,7 @@ export default function Historial() {
 
     return (
         <div style={{ flexGrow: 1 }} >
+            <Header />
             <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
             <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
             <MaterialTable

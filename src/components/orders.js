@@ -62,10 +62,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-async function getInfo() {
-  const url = 'http://127.0.0.1:8000/ingredientes/getall'
+async function getInfo(type, uurl = '') {
+  const url = 'http://127.0.0.1:8000/' + uurl
   const response = await fetch(url, {
-    method: 'GET', // *GET, POST, PUT, DELETE, etc.
+    method: type, // *GET, POST, PUT, DELETE, etc.
     mode: 'cors',
     cache: 'no-cache',
     credentials: 'same-origin',
@@ -81,12 +81,16 @@ async function getInfo() {
 }
 
 export default function Orders() {
-
+  const [id, setId] = React.useState();
   const classes = useStyles();
   const [Information, setInformation] = React.useState([]);
   const [Info3, setInfo] = React.useState([Information]);
   useEffect(() => {
-    getInfo().then((data) => {
+    let token = localStorage.getItem("id");
+    getInfo('POST', 'usuarios/getid/' + token).then((data) => {
+      setId(data);
+    })
+    getInfo('GET', 'ingredientes/getall').then((data) => {
       setInformation(data);
       setInfo(data);
     })
@@ -193,6 +197,7 @@ export default function Orders() {
   const handleAccept = () => {
     var obj = {}
     obj.data = {}
+    obj.data.userId=id;
     obj.data.especificaciones = descripcion;
     obj.data.receta = [];
     var i = 0;
@@ -237,6 +242,7 @@ export default function Orders() {
       if (elemento.id == id) {
         obj.data = elemento;
         obj.data.stock = obj.data.stock - stock;
+
       }
     })
     js = JSON.stringify(obj)
