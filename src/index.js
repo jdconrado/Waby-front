@@ -19,8 +19,8 @@ import Profile from './components/profile';
             <Route path="/signup" component={SignUp} />
             <Route path="/orders" component={Orders}/>
             <Route path="/admin/ingredientes" component={Admin}/>
-            <Route path ="/userr/:id" component={Profile}/>
-            <Route path ="/user/historial" component={Historial} />
+            <Route exact path ="/userr/:id" component={Profile}/>
+            <Route exact path="/userr/:id/historial" component={Historial} />
             
         </div> 
         </Router>
