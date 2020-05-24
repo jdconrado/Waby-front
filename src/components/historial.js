@@ -30,6 +30,7 @@ async function getInfo(url = '') {
 }
 
 export default function Historial() {
+    console.log(window.location)
     const [Information, setInformation] = React.useState([]); //Pedidos
     const [Lista, setLista] = React.useState([]);
     const [Ingredientes, setIngredientes] = React.useState([]);
