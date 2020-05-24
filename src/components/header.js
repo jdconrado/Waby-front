@@ -30,7 +30,7 @@ export default class Header extends React.Component {
                 [<Button className={this.styles.button} color='inherit' href = "/">Inicio</Button>],
                 [<Button className={this.styles.button} color='inherit'>Pide aquí</Button>],
                 [<Button className={this.styles.button} color='inherit'>Conocenos</Button>],
-                [<Button className={this.styles.button} color='inherit' href =  {`/user/${id}`}>
+                [<Button className={this.styles.button} color='inherit' href =  {`/userr/${id}`}>
                 PERFIL </Button>],
             ]
         } else {

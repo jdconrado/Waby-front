@@ -27,91 +27,134 @@ function Copyright() {
   );
 }
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    height: '90vh',
-  },
-  image: {
-    backgroundImage: '../assests/Waby_screenpurple.png',
-    backgroundRepeat: 'no-repeat',
-    backgroundColor:
-      theme.palette.type === 'light' ? theme.palette.grey[50] : theme.palette.grey[900],
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-  },
-  paper: {
-    margin: theme.spacing(8, 4),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-  },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
-  },
-  form: {
-    width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing(1),
-  },
-  submit: {
-    margin: theme.spacing(3, 0, 2),
-  },
-}));
-export default function Profile() {
+export default class Profile extends React.Component {
 
-  const classes = useStyles();
+  render() {
+    const classes = makeStyles((theme) => ({
+      root: {
+        height: '90vh',
+      },
+      image: {
+        backgroundImage: '../assests/Waby_screenpurple.png',
+        backgroundRepeat: 'no-repeat',
+        backgroundColor:
+          theme.palette.type === 'light' ? theme.palette.grey[50] : theme.palette.grey[900],
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+      },
+      paper: {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+      },
+      avatar: {
+        margin: theme.spacing(1),
+        backgroundColor: theme.palette.secondary.main,
+      },
+      form: {
+        width: '100%', // Fix IE 11 issue.
+        marginTop: theme.spacing(1),
+      },
+      submit: {
+        margin: theme.spacing(3, 0, 2),
+      },
+    }));
+    let userId = this.props.match.params.id;
+    const name = "Moise", lname = "Juan", email = "Brayan@hotmail.com";
+    console.log(userId)
 
-  return (
-    <div style={{ backgroundColor: '#AF67E6' }}>
-      <Header />
-      <Grid container component="main" className={classes.root} alignItems="center" >
-        <CssBaseline />
-        <Grid item xs={6}>
-          <Box display="flex" justifyContent="center" >
-            <img src={require('../assests/Logo_white.png')} alt='c2' width='50%' height='50%' />
-          </Box>
+    return (
+      <div style={{ backgroundColor: '#AF67E6' }}>
+        <Header />
+        <Grid container component="main" className={classes.root} alignItems="center" >
+          <CssBaseline />
+          <Grid item xs={6}>
+            <Box display="flex" justifyContent="center" >
+              <img src={require('../assests/Logo_white.png')} alt='c2' width='50%' height='50%' />
+            </Box>
+          </Grid>
+          <Grid item xs={6} component={Paper} elevation={6} square style={{ padding: 100 }}>
+            <div className={classes.paper}>
+              <form className={classes.form} noValidatek>
+                <TextField
+                  disabled
+                  variant="outlined"
+                  margin="normal"
+                  required
+                  fullWidth
+                  defaultValue={name}
+                  id="name"
+                  label="name"
+                  name="name"
+                  autoComplete="name"
+                  autoFocus
+                />
+
+                <TextField
+                  disabled
+                  variant="outlined"
+                  margin="normal"
+                  required
+                  fullWidth
+                  id="lname"
+                  label="Apellido"
+                  defaultValue={lname}
+                  name="lname"
+                  autoComplete="Last name"
+                  autoFocus
+                />
+
+                <TextField
+                  defaultValue={email}
+                  variant="outlined"
+                  disabled
+                  margin="normal"
+                  required
+                  fullWidth
+                  id="email"
+                  label="Email Address"
+                  name="email"
+                  autoComplete="email"
+                  autoFocus
+                />
+                <TextField
+                  defaultValue={userId}
+                  variant="outlined"
+                  disabled
+                  margin="normal"
+                  required
+                  fullWidth
+                  name="password"
+                  label="id"
+                  type="password"
+                  id="password"
+                  autoComplete="current-password"
+                />
+                <Grid container component="main" className={classes.root} alignItems="center" >
+                  <Grid item xs={6}>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      className={classes.submit}
+                    >
+                      Actualizar datos
+                    </Button>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      className={classes.submit}
+                    >
+                      Actualizar datos
+                   </Button>
+                  </Grid>
+                </Grid>
+              </form>
+            </div>
+          </Grid>
         </Grid>
-        <Grid item xs={6} component={Paper} elevation={6} square style= {{padding: 100}}>
-          <div className={classes.paper}>
-           
-            <form className={classes.form} noValidate>
-              <TextField
-                variant="outlined"
-                margin="normal"
-                required
-                fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
-                autoFocus
-              />
-              <TextField
-                variant="outlined"
-                margin="normal"
-                required
-                fullWidth
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
-                autoComplete="current-password"
-              />
-
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                color="primary"
-                className={classes.submit}
-                href="/"
-              >
-                Actualizar datos
-            </Button>
-            </form>
-          </div>
-        </Grid>
-      </Grid>
-    </div>
-  );
+      </div >
+    );
+  }
 }
