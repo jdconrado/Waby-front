@@ -14,6 +14,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Header from './header';
 import Modal from '@material-ui/core/Modal';
+import useEffect from 'react';
 
 function Copyright() {
   return (
@@ -91,24 +92,24 @@ export default function Profile() {
     console.log(obj);
     var js = JSON.stringify(obj);
     var url = 'http://localhost:8000/usuarios/crear';
-  //  updateData(url, js);
+    //  updateData(url, js);
   }
- /* async function updateData(url = '', data = {}) {
-    const response = await fetch(url, {
-      method: 'PUT', // *GET, POST, PUT, DELETE, etc.
-      mode: 'cors', // no-cors, *cors, same-origin
-      cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-      credentials: 'same-origin', // include, *same-origin, omit
-      headers: {
-        'Content-Type': 'application/json'
-        // 'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      redirect: 'follow', // manual, *follow, error
-      referrerPolicy: 'no-referrer',
-      body: data // body data type must match "Content-Type" header
-    });
-    return response.json(); // parses JSON response into native JavaScript objects
-  }*/
+  /* async function updateData(url = '', data = {}) {
+     const response = await fetch(url, {
+       method: 'PUT', // *GET, POST, PUT, DELETE, etc.
+       mode: 'cors', // no-cors, *cors, same-origin
+       cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+       credentials: 'same-origin', // include, *same-origin, omit
+       headers: {
+         'Content-Type': 'application/json'
+         // 'Content-Type': 'application/x-www-form-urlencoded',
+       },
+       redirect: 'follow', // manual, *follow, error
+       referrerPolicy: 'no-referrer',
+       body: data // body data type must match "Content-Type" header
+     });
+     return response.json(); // parses JSON response into native JavaScript objects
+   }*/
 
 
 
@@ -120,6 +121,31 @@ export default function Profile() {
   const handleAble = () => {
     setDisable(false);
   };
+
+
+  useEffect(() => {
+    let token = localStorage.getItem["id"];
+    componentDidMount(`http://127.0.0.1:8000/usuarios/getid/${token}`,'POST')
+
+  }, [null])
+
+  async function componentDidMount(url = '', type) {
+    const response = await fetch(url, {
+      method: type, // *GET, POST, PUT, DELETE, etc.
+      mode: 'cors',
+      cache: 'no-cache',
+      credentials: 'same-origin',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      redirect: 'follow',
+      referrerPolicy: 'no-referrer'
+    }).then((res) => {
+      return res.json()
+    }); return response;
+
+  }
+
 
   return (
     <div style={{ backgroundColor: '#AF67E6' }}>

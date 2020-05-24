@@ -81,6 +81,7 @@ export default function SignIn() {
     var url = 'http://localhost:8000/usuarios/login';
     sendData(url, js).then((response)=>{
       localStorage.setItem('id', response.result);
+      window.location.href = 'http://localhost:3000/';
     });
   }
 

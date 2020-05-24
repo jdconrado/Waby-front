@@ -11,6 +11,8 @@ import Admin from './components/admin';
 import Historial from './components/historial';
 import Profile from './components/profile';
 
+    
+
     const routing = (
         <Router>
         <div>

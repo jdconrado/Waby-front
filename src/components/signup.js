@@ -93,7 +93,8 @@ export default function SignUn() {
     var js = JSON.stringify(obj);
     var url = 'http://localhost:8000/usuarios/crear';
     postData(url, js).then((response)=>{
-      localStorage('id',response.result)
+      localStorage.setItem('id',response.result);
+      window.location.href="http://localhost:3000"
     });
   }
   async function postData(url = '', data = {}) {
@@ -110,7 +111,9 @@ export default function SignUn() {
       referrerPolicy: 'no-referrer',
       body: data // body data type must match "Content-Type" header
     });
+
     return response.json(); // parses JSON response into native JavaScript objects
+
   }
 
 
