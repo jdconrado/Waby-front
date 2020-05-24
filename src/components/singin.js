@@ -79,11 +79,11 @@ export default function SignIn() {
     console.log(obj);
     var js = JSON.stringify(obj);
     var url = 'http://localhost:8000/usuarios/login';
-    sendData(url, js);
+    sendData(url, js).then(console.log);
   }
 
   async function sendData(url = '', data = {}) {
-    
+
     const response = await fetch(url, {
       method: 'POST', // *GET, POST, PUT, DELETE, etc.
       mode: 'cors', // no-cors, *cors, same-origin
@@ -98,7 +98,6 @@ export default function SignIn() {
       body: data // body data type must match "Content-Type" header
     });
     return response.json(); // parses JSON response into native JavaScript objects
-  
   }
 
 
@@ -112,7 +111,7 @@ export default function SignIn() {
             <img src={require('../assests/Logo_white.png')} alt='c2' width='50%' height='50%' />
           </Box>
         </Grid>
-        <Grid item xs={6} component={Paper} elevation={6} square style= {{padding: 60}}>
+        <Grid item xs={6} component={Paper} elevation={6} square style={{ padding: 60 }}>
           <div className={classes.paper}>
             <Avatar className={classes.avatar}>
               <LockOutlinedIcon />
@@ -147,15 +146,14 @@ export default function SignIn() {
               />
 
               <Button
-                type="submit"
+                //type="submit"
                 fullWidth
                 variant="contained"
                 color="primary"
                 className={classes.submit}
-                
+
                 onClick={enviarDatos}
               >
-
                 Sign In
             </Button>
               <Grid container>
