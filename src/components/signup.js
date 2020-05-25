@@ -61,13 +61,13 @@ const useStyles = makeStyles((theme) => ({
 export default function SignUn() {
 
   const classes = useStyles();
-  
+
 
   const [name, setName] = React.useState("");
   const [lName, setLname] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
-
+  const [admin, setAdmin] = React.useState(false);
 
   const datosName = (event) => {
     setName(event.target.value);
@@ -81,6 +81,26 @@ export default function SignUn() {
   const datosPw = (event) => {
     setPassword(event.target.value);
   }
+  const datosAdmin = (event) => {
+    setAdmin(event.target.value);
+  }
+
+
+  const verificarTipo = () => {
+    
+    if (admin){
+      if (pwAdmin == "Waby2020"){
+        console.log("Contraseña de admin correcta")
+      }else {
+        alert("Error, contraseña de administrador incorrecta")
+      }
+    } else {
+      console.log("No admin")
+    }
+    
+  }
+
+
   const enviarDatos = () => {
 
     var obj = {};
@@ -89,12 +109,13 @@ export default function SignUn() {
     obj.data.lastname = lName;
     obj.data.email = email;
     obj.data.password = password;
+    obj.data.tipo = admin;
     console.log(obj);
     var js = JSON.stringify(obj);
     var url = 'http://localhost:8000/usuarios/crear';
-    postData(url, js).then((response)=>{
-      localStorage.setItem('id',response.result);
-      window.location.href="http://localhost:3000"
+    postData(url, js).then((response) => {
+      localStorage.setItem('id', response.result);
+      window.location.href = "http://localhost:3000"
     });
   }
   async function postData(url = '', data = {}) {
@@ -115,8 +136,19 @@ export default function SignUn() {
     return response.json(); // parses JSON response into native JavaScript objects
 
   }
+  
+  const [pwAdmin, setPwAdmin] = React.useState("");
+  const habilitarPw = (evt) => {
+    if (evt.target.checked) {
+      setAdmin(true);
+    } else {
+      setAdmin(false)
+    }
+  }
 
-
+  const datosPwAdmin = (evt) => {
+    setPwAdmin(evt.target.value);
+  }
 
   return (
     <div style={{ backgroundColor: '#AF67E6' }}>
@@ -144,7 +176,7 @@ export default function SignUn() {
                 fullWidth
                 onChange={(evt) => datosName(evt)}
                 id="fname"
-                label="First Name"
+                label="Nombre"
                 name="fname"
                 autoComplete="fname"
                 autoFocus
@@ -156,7 +188,7 @@ export default function SignUn() {
                 fullWidth
                 id="lname"
                 onChange={(evt) => datosLname(evt)}
-                label="Last Name"
+                label="Apellido"
                 name="lname"
                 autoComplete="lname"
 
@@ -168,7 +200,7 @@ export default function SignUn() {
                 fullWidth
                 id="email"
                 onChange={(evt) => datosEmail(evt)}
-                label="Email Address"
+                label="Correo electrónico"
                 name="email"
                 autoComplete="email"
 
@@ -179,20 +211,44 @@ export default function SignUn() {
                 required
                 fullWidth
                 name="password"
-                label="Password"
+                label="Contraseña"
                 onChange={(evt) => datosPw(evt)}
                 type="password"
                 id="password"
                 autoComplete="current-password"
               />
+
+              {admin &&
+                <TextField
+                  variant="outlined"
+                  margin="normal"
+                  required
+                  fullWidth
+                  name="password2"
+                  label="Contraseña de autorización"
+                  onChange={(evt) => datosPwAdmin(evt)}
+                  type="password"
+                  id="password2"
+                />
+
+              }
+
+              <FormControlLabel
+                value="top"
+                control={<Checkbox color="primary" />}
+                label="Registro como administrador"
+                labelPlacement="end"
+                onChange={(evt) => habilitarPw(evt)}
+              />
+
               <Button
 
                 fullWidth
                 variant="contained"
                 color="primary"
-                
-                onClick={enviarDatos}
-              
+
+                onClick={verificarTipo}
+
               >
                 Sign Up
             </Button>
