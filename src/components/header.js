@@ -62,7 +62,7 @@ export default class Header extends React.Component {
     
     logOut = () => {
         let token = localStorage.getItem("id");
-        url(`http://127.0.0.1:8000/usuarios/logout/${token}`).then(localStorage.removeItem("id")).then(window.location.href="http://localhost:3000/")
+        url(`http://127.0.0.1:8000/usuarios/logout/${token}`).then((dat)=>{window.location.href="http://localhost:3000/"}).then(localStorage.removeItem("id"))
     }
 
     render() {
