@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundPosition: 'center',
   },
   input: {
-    width: 42,
+    width: 90,
   },
   paper: {
     margin: theme.spacing(5, 0),
@@ -230,14 +230,12 @@ export default function Orders() {
       if (descripcion.length == 0) {
         setOp(true);
       } else {
-        let i = 0;
-        let ni = 0;
         redirData('http://127.0.0.1:8000/pedidos/crear', js, 'POST').then((data) => {
           obj.data.receta.forEach(element => {
-            redirData('http://127.0.0.1:8000/ingredientes/actualizar/' + element.ingId, getIng(element.ingId, element.cantidad), 'PUT').then((data) => { i = i + 1; });
-          }
-          )
-          window.location.href='http://127.0.0.1:3000/';
+            redirData('http://127.0.0.1:8000/ingredientes/actualizar/' + element.ingId, getIng(element.ingId, element.cantidad), 'PUT').then((data) => { });
+          })
+        }).then((data)=>{
+          window.location.href = 'http://127.0.0.1:3000/';
         });
       }
     } else {
@@ -406,6 +404,7 @@ export default function Orders() {
                       margin="dense"
                       onChange={(evt) => handleInputChange(evt, info)}
                       onBlur={handleBlur(info)}
+                      endAdornment={<InputAdornment position="end">{str(info.tipo)}</InputAdornment>}
                       inputProps={{
                         step: 1,
                         min: 0,

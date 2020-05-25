@@ -1,7 +1,6 @@
 import React from 'react';
 import { AppBar, Toolbar, Button, Box } from '@material-ui/core';
 import { makeStyles } from "@material-ui/core/styles";
-import { Route, Link, BrowserRouter as Router } from 'react-router-dom';
 async function url(url = '') {
     const response = await fetch(url, {
         method: 'POST', // *GET, POST, PUT, DELETE, etc.
@@ -42,7 +41,7 @@ export default class Header extends React.Component {
             let token = localStorage.getItem("id");
             if (token != null) {
                 const url = `http://127.0.0.1:8000/usuarios/getid/${token}`
-                const response = fetch(url, {
+                fetch(url, {
                     method: 'POST', // *GET, POST, PUT, DELETE, etc.
                     mode: 'cors',
                     cache: 'no-cache',

@@ -33,7 +33,6 @@ export default function Historial() {
     const [Information, setInformation] = React.useState([]); //Pedidos
     const [Lista, setLista] = React.useState();
     const [Ingredientes, setIngredientes] = React.useState([]);
-    const [id, setId] = React.useState();
     useEffect(() => {
 
         let token = localStorage.getItem("id");

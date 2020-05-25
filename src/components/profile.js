@@ -1,20 +1,20 @@
 import React from 'react';
-import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
 import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Header from './header';
-import Modal from '@material-ui/core/Modal';
-import {useEffect} from 'react';
+import { useEffect } from 'react';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
 function Copyright() {
   return (
@@ -66,11 +66,13 @@ const classes = makeStyles((theme) => ({
 
 export default function Profile() {
 
-
-
   const [name, setName] = React.useState("");
   const [lName, setLname] = React.useState("");
   const [email, setEmail] = React.useState("");
+  const [op, setOp] = React.useState(false);
+  const [Message, setMessage] = React.useState("");
+  const [isError, setisError] = React.useState(false);
+  const [help, setHelp] = React.useState("");
 
   const datosName = (event) => {
     setName(event.target.value);
@@ -80,35 +82,56 @@ export default function Profile() {
   }
   const datosEmail = (event) => {
     setEmail(event.target.value);
+    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if (!re.test(event.target.value.toLowerCase())) {
+      setHelp("Formato de correo incorrecto.")
+      setisError(true);
+    } else {
+      setHelp("");
+      setisError(false);
+    }
+  }
+
+  const handleClose = () => {
+    setOp(false);
   }
 
   const enviarDatos = () => {
-    var obj = {};
-    obj.data = {};
-    obj.data.name = name;
-    obj.data.lastname = lName;
-    obj.data.email = email;
-    console.log(obj);
-    var js = JSON.stringify(obj);
-  // var url = 'http://localhost:8000/usuarios/crear';
-    //  updateData(url, js);
+    if (name.length == 0 || lName.length == 0 || email.length == 0) {
+      setMessage("Rellena todos los campos");
+      setOp(true);
+    } else if (isError) {
+      setMessage("Ingresa el correo correctamente.");
+      setOp(true);
+    } else {
+      var obj = {};
+      obj.data = {};
+      obj.data.name = name;
+      obj.data.lastname = lName;
+      obj.data.email = email;
+      var js = JSON.stringify(obj);
+      var url = 'http://localhost:8000/usuarios/update/' + id;
+      updateData(url, js).then((data) => {
+        alert(data.result);
+      });
+    }
   }
-  /* async function updateData(url = '', data = {}) {
-     const response = await fetch(url, {
-       method: 'PUT', // *GET, POST, PUT, DELETE, etc.
-       mode: 'cors', // no-cors, *cors, same-origin
-       cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-       credentials: 'same-origin', // include, *same-origin, omit
-       headers: {
-         'Content-Type': 'application/json'
-         // 'Content-Type': 'application/x-www-form-urlencoded',
-       },
-       redirect: 'follow', // manual, *follow, error
-       referrerPolicy: 'no-referrer',
-       body: data // body data type must match "Content-Type" header
-     });
-     return response.json(); // parses JSON response into native JavaScript objects
-   }*/
+  async function updateData(url = '', data = {}) {
+    const response = await fetch(url, {
+      method: 'POST', // *GET, POST, PUT, DELETE, etc.
+      mode: 'cors', // no-cors, *cors, same-origin
+      cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+      credentials: 'same-origin', // include, *same-origin, omit
+      headers: {
+        'Content-Type': 'application/json'
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      redirect: 'follow', // manual, *follow, error
+      referrerPolicy: 'no-referrer',
+      body: data // body data type must match "Content-Type" header
+    });
+    return response.json(); // parses JSON response into native JavaScript objects
+  }
 
 
 
@@ -122,18 +145,16 @@ export default function Profile() {
     setDisable(false);
   };
 
-  const [id,setId] = React.useState("");
+  const [id, setId] = React.useState("");
   useEffect(() => {
     let token = localStorage.getItem("id");
-
-    componentDidMount(`http://127.0.0.1:8000/usuarios/getid/${token}`,'POST').then((res)=>
-    {setId(res.result); componentDidMount(`http://127.0.0.1:8000/usuarios/getUser/${res.result}`,'GET').then((res)=>
-    { 
-      setName(res.result.name);
-      setLname(res.result.lastname);
-      setEmail(res.result.email);
-      console.log(res.result.name);
-    })})
+    componentDidMount(`http://127.0.0.1:8000/usuarios/getid/${token}`, 'POST').then((res) => {
+      setId(res.result); componentDidMount(`http://127.0.0.1:8000/usuarios/getUser/${res.result}`, 'GET').then((res) => {
+        setName(res.result.name);
+        setLname(res.result.lastname);
+        setEmail(res.result.email);
+      })
+    })
 
   }, [null])
 
@@ -174,10 +195,10 @@ export default function Profile() {
                   margin="normal"
                   required
                   fullWidth
-                  value = {name}
+                  value={name}
                   //defaultValue={name}
                   id="name"
-                  label="name"
+                  label="Nombre"
                   name="name"
                   autoComplete="name"
                   autoFocus
@@ -191,7 +212,7 @@ export default function Profile() {
                   fullWidth
                   id="lname"
                   label="Apellido"
-                  value = {lName}
+                  value={lName}
                   // defaultValue={lName}
                   name="lname"
                   autoComplete="Last name"
@@ -199,20 +220,20 @@ export default function Profile() {
                 />
 
                 <TextField
-                //  defaultValue={email}
+                  //  defaultValue={email}
                   variant="outlined"
                   disabled
                   margin="normal"
                   required
                   fullWidth
                   id="email"
-                  value = {email}
+                  value={email}
                   label="Email Address"
                   name="email"
                   autoComplete="email"
                   autoFocus
                 />
-               
+
                 <Grid container component="main" className={classes.root} alignItems="center" >
                   <Grid item xs={6}>
                     <Button
@@ -272,6 +293,8 @@ export default function Profile() {
                   variant="outlined"
                   margin="normal"
                   required
+                  error={isError}
+                  helperText={help}
                   fullWidth
                   id="email"
                   onChange={(evt) => datosEmail(evt)}
@@ -280,7 +303,7 @@ export default function Profile() {
                   autoComplete="email"
                   autoFocus
                 />
-                
+
                 <Grid container component="main" className={classes.root} alignItems="center" >
                   <Grid item xs={6}>
                     <Button
@@ -288,10 +311,28 @@ export default function Profile() {
                       color="primary"
                       className={classes.submit}
                       onClick={handleDisable}
-                   
+
                     >
                       Confirmar información
                     </Button>
+                    <Dialog
+                      open={op}
+                      onClose={handleClose}
+                      aria-labelledby="alert-dialog-slide-title"
+                      aria-describedby="alert-dialog-slide-description"
+                    >
+                      <DialogTitle id="alert-dialog-slide-title">{"Advertencia"}</DialogTitle>
+                      <DialogContent>
+                        <DialogContentText id="alert-dialog-slide-description">
+                          {Message}
+                        </DialogContentText>
+                      </DialogContent>
+                      <DialogActions>
+                        <Button onClick={handleClose} color="primary">
+                          Cerrar
+                  </Button>
+                      </DialogActions>
+                    </Dialog>
                   </Grid>
                   <Grid item xs={6}>
                     <Button

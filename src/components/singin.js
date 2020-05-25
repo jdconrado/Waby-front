@@ -13,6 +13,11 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Header from './header';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
 function Copyright() {
   return (
@@ -62,27 +67,55 @@ export default function SignIn() {
   const classes = useStyles();
 
   const [email, setEmail] = React.useState("");
+  const [op, setOp] = React.useState(false);
+  const [isError, setisError] = React.useState(false);
+  const [Message, setMessage] = React.useState("");
+  const [help, setHelp] = React.useState("");
   const [password, setPassword] = React.useState("");
 
   const datosEmail = (event) => {
     setEmail(event.target.value);
+    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if (!re.test(event.target.value.toLowerCase())) {
+      setHelp("Formato de correo incorrecto.")
+      setisError(true);
+    } else {
+      setHelp("");
+      setisError(false);
+    }
   }
   const datosPw = (event) => {
     setPassword(event.target.value);
   }
-  const enviarDatos = () => {
 
-    var obj = {};
-    obj.data = {};
-    obj.data.email = email;
-    obj.data.password = password;
-    console.log(obj);
-    var js = JSON.stringify(obj);
-    var url = 'http://localhost:8000/usuarios/login';
-    sendData(url, js).then((response)=>{
-      localStorage.setItem('id', response.result);
-      window.location.href = 'http://localhost:3000/';
-    });
+  const handleClose = () => {
+    setOp(false);
+  }
+
+
+  const enviarDatos = () => {
+    if (email.length == 0 || password.length == 0) {
+      setMessage("Rellena todos los campos");
+      setOp(true);
+    } else if (isError) {
+      setMessage("Ingresa el correo correctamente.");
+      setOp(true);
+    } else {
+      var obj = {};
+      obj.data = {};
+      obj.data.email = email;
+      obj.data.password = password;
+      var js = JSON.stringify(obj);
+      var url = 'http://localhost:8000/usuarios/login';
+      sendData(url, js).then((response) => {
+        if (response.status == "Error") {
+          alert(response.result)
+        } else {
+          localStorage.setItem('id', response.result);
+          window.location.href = 'http://localhost:3000/';
+        }
+      });
+    }
   }
 
   async function sendData(url = '', data = {}) {
@@ -127,6 +160,8 @@ export default function SignIn() {
                 variant="outlined"
                 margin="normal"
                 required
+                error={isError}
+                helperText={help}
                 fullWidth
                 id="email"
                 label="Email Address"
@@ -158,6 +193,24 @@ export default function SignIn() {
               >
                 Sign In
            </Button>
+              <Dialog
+                open={op}
+                onClose={handleClose}
+                aria-labelledby="alert-dialog-slide-title"
+                aria-describedby="alert-dialog-slide-description"
+              >
+                <DialogTitle id="alert-dialog-slide-title">{"Advertencia"}</DialogTitle>
+                <DialogContent>
+                  <DialogContentText id="alert-dialog-slide-description">
+                    {Message}
+                  </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={handleClose} color="primary">
+                    Cerrar
+                  </Button>
+                </DialogActions>
+              </Dialog>
               <Grid container>
                 <Grid item xs>
                   <Link href="#" variant="body2">

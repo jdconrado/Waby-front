@@ -13,6 +13,11 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Header from './header';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
 function Copyright() {
   return (
@@ -68,6 +73,10 @@ export default function SignUn() {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [admin, setAdmin] = React.useState(false);
+  const [help, setHelp] = React.useState("");
+  const [op, setOp] = React.useState(false);
+  const [isError, setisError] = React.useState(false);
+  const [Message, setMessage] = React.useState("");
 
   const datosName = (event) => {
     setName(event.target.value);
@@ -77,6 +86,14 @@ export default function SignUn() {
   }
   const datosEmail = (event) => {
     setEmail(event.target.value);
+    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if (!re.test(event.target.value.toLowerCase())) {
+      setHelp("Formato de correo incorrecto.")
+      setisError(true);
+    } else {
+      setHelp("");
+      setisError(false);
+    }
   }
   const datosPw = (event) => {
     setPassword(event.target.value);
@@ -84,41 +101,55 @@ export default function SignUn() {
   const datosAdmin = (event) => {
     setAdmin(event.target.value);
   }
-
+  const handleClose = () =>{
+    setOp(false);
+  }
 
   const verificarTipo = () => {
-    
-    if (admin){
-      if (pwAdmin == "Waby2020"){
-        console.log("Contraseña de admin correcta");
+
+    if (admin) {
+      if (pwAdmin == "Waby2020") {
         enviarDatos();
-      }else {
+      } else {
         alert("Error, contraseña de administrador incorrecta");
       }
     } else {
-      console.log("No admin");
       enviarDatos();
     }
-    
+
   }
 
 
   const enviarDatos = () => {
-
-    var obj = {};
-    obj.data = {};
-    obj.data.name = name;
-    obj.data.lastname = lName;
-    obj.data.email = email;
-    obj.data.password = password;
-    obj.data.tipo = admin;
-    console.log(obj);
-    var js = JSON.stringify(obj);
-    var url = 'http://localhost:8000/usuarios/crear';
-    postData(url, js).then((response) => {
-      localStorage.setItem('id', response.result);
-      window.location.href = "http://localhost:3000"
-    });
+    if (name.length == 0 || lName.length == 0 || email.length == 0 || password.length == 0) {
+      setMessage("Rellena todos los campos");
+      setOp(true);
+    } else if (isError) {
+      setMessage("Ingresa el correo correctamente.");
+      setOp(true);
+    } else {
+      var obj = {};
+      obj.data = {};
+      obj.data.name = name;
+      obj.data.lastname = lName;
+      obj.data.email = email;
+      obj.data.password = password;
+      obj.data.tipo = admin;
+      var js = JSON.stringify(obj);
+      var url = 'http://localhost:8000/usuarios/crear';
+      postData(url, js).then((response) => {
+        if (response.status == "Error") {
+          if (response.details.includes("already exists")) {
+            alert("Ya esta en uso el correo electronico.")
+          } else {
+            alert(response.result);
+          }
+        } else {
+          localStorage.setItem('id', response.result);
+          window.location.href = "http://localhost:3000"
+        }
+      });
+    }
   }
   async function postData(url = '', data = {}) {
     const response = await fetch(url, {
@@ -138,7 +169,7 @@ export default function SignUn() {
     return response.json(); // parses JSON response into native JavaScript objects
 
   }
-  
+
   const [pwAdmin, setPwAdmin] = React.useState("");
   const habilitarPw = (evt) => {
     if (evt.target.checked) {
@@ -199,6 +230,8 @@ export default function SignUn() {
                 variant="outlined"
                 margin="normal"
                 required
+                error={isError}
+                helperText={help}
                 fullWidth
                 id="email"
                 onChange={(evt) => datosEmail(evt)}
@@ -254,6 +287,24 @@ export default function SignUn() {
               >
                 Sign Up
             </Button>
+              <Dialog
+                open={op}
+                onClose={handleClose}
+                aria-labelledby="alert-dialog-slide-title"
+                aria-describedby="alert-dialog-slide-description"
+              >
+                <DialogTitle id="alert-dialog-slide-title">{"Advertencia"}</DialogTitle>
+                <DialogContent>
+                  <DialogContentText id="alert-dialog-slide-description">
+                    {Message}
+                  </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={handleClose} color="primary">
+                    Cerrar
+                  </Button>
+                </DialogActions>
+              </Dialog>
               <Grid container>
                 <Grid item>
                   <Link href="/login" variant="body2">
