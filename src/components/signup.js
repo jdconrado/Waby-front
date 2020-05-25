@@ -90,13 +90,14 @@ export default function SignUn() {
     
     if (admin){
       if (pwAdmin == "Waby2020"){
-        console.log("Contraseña de admin correcta")
-        enviarDatos()
+        console.log("Contraseña de admin correcta");
+        enviarDatos();
       }else {
-        alert("Error, contraseña de administrador incorrecta")
+        alert("Error, contraseña de administrador incorrecta");
       }
     } else {
-      console.log("No admin")
+      console.log("No admin");
+      enviarDatos();
     }
     
   }
