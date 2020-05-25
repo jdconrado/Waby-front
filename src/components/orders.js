@@ -87,12 +87,18 @@ export default function Orders() {
   const [Info3, setInfo] = React.useState([Information]);
   useEffect(() => {
     let token = localStorage.getItem("id");
+    let ingr = []
     getInfo('POST', 'usuarios/getid/' + token).then((data) => {
       setId(data);
     })
     getInfo('GET', 'ingredientes/getall').then((data) => {
-      setInformation(data);
-      setInfo(data);
+      data.forEach(element => {
+        if (element.stock > 0) {
+          ingr.push(element);
+        }
+      })
+      setInformation(ingr);
+      setInfo(ingr);
     })
   }, [null])
   const [price, setPrice] = React.useState(0)
@@ -197,7 +203,7 @@ export default function Orders() {
   const handleAccept = () => {
     var obj = {}
     obj.data = {}
-    obj.data.userId=id;
+    obj.data.userId = id;
     obj.data.especificaciones = descripcion;
     obj.data.receta = [];
     var i = 0;
@@ -224,11 +230,15 @@ export default function Orders() {
       if (descripcion.length == 0) {
         setOp(true);
       } else {
-        redirData('http://127.0.0.1:8000/pedidos/crear', js, 'POST');
-        obj.data.receta.forEach(element => {
-          redirData('http://127.0.0.1:8000/ingredientes/actualizar/' + element.ingId, getIng(element.ingId, element.cantidad), 'PUT');
-        })
-        window.location.replace('http://127.0.0.1:3000/');
+        let i = 0;
+        let ni = 0;
+        redirData('http://127.0.0.1:8000/pedidos/crear', js, 'POST').then((data) => {
+          obj.data.receta.forEach(element => {
+            redirData('http://127.0.0.1:8000/ingredientes/actualizar/' + element.ingId, getIng(element.ingId, element.cantidad), 'PUT').then((data) => { i = i + 1; });
+          }
+          )
+          window.location.href='http://127.0.0.1:3000/';
+        });
       }
     } else {
       setAlert(true)
