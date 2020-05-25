@@ -37,7 +37,8 @@ export default class Header extends React.Component {
     }
     componentDidMount() {
         if (this.state.id ==-1){
-
+            console.log("DidMount");
+            console.log(this.state.id);
             let token = localStorage.getItem("id");
             if (token != null) {
                 const url = `http://127.0.0.1:8000/usuarios/getid/${token}`
@@ -75,7 +76,6 @@ export default class Header extends React.Component {
 
         }
         if (this.logged) {
-            console.log(this.state.id)
             buttons = [
                 [<Button className={this.styles.button} color='inherit' href="/">Inicio</Button>],
                 [<Button className={this.styles.button} color='inherit' href="/orders">Pide aquí</Button>],
