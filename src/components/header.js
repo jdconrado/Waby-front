@@ -36,23 +36,27 @@ export default class Header extends React.Component {
     static defaultProps = {
     }
     componentDidMount() {
-        let token = localStorage.getItem("id");
-        if (token != null) {
-            const url = `http://127.0.0.1:8000/usuarios/getid/${token}`
-            const response = fetch(url, {
-                method: 'POST', // *GET, POST, PUT, DELETE, etc.
-                mode: 'cors',
-                cache: 'no-cache',
-                credentials: 'same-origin',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                redirect: 'follow',
-                referrerPolicy: 'no-referrer'
-            }).then((res) => {
-                return res.json()
-            }).then((dat) => { this.setState({id: dat.result}) ; console.log(dat); console.log(this.state.id) });
+        if (this.state.id ==-1){
+
+            let token = localStorage.getItem("id");
+            if (token != null) {
+                const url = `http://127.0.0.1:8000/usuarios/getid/${token}`
+                const response = fetch(url, {
+                    method: 'POST', // *GET, POST, PUT, DELETE, etc.
+                    mode: 'cors',
+                    cache: 'no-cache',
+                    credentials: 'same-origin',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    redirect: 'follow',
+                    referrerPolicy: 'no-referrer'
+                }).then((res) => {
+                    return res.json()
+                }).then((dat) => { this.setState({id: dat.result}) ; console.log(dat); console.log(this.state.id) });
+            }
         }
+        
     }
     
     logOut = () => {
