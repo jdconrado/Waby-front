@@ -179,7 +179,7 @@ export default function Profile() {
 
 
   return (
-    <div style={{ flexGrow: 1 }}>
+    <div style={{ backgroundColor: '#AF67E6'}}>
       <Header />
       <Backdrop className={classes.backdrop} open={circle} style={{zIndex: 3}}>
         <CircularProgress color="inherit" />
@@ -187,11 +187,11 @@ export default function Profile() {
       <Grid container component="main" className={classes.root} alignItems="center">
         <CssBaseline />
         <Grid item xs={6} z-index='3'>
-          <Box display="flex" justifyContent="center">
-            <img src={require('../assests/Waby_screenpurple.png')} alt='c2' width='100%' height='80%' />
+          <Box display="flex" justifyContent="center" z-index='0'>
+            <img src={require('../assests/Waby_screenpurple.png')} alt='c2' width='100%' height='100%' z-index='0' />
           </Box>
         </Grid>
-        <Grid item xs={6} elevation={6} square style={{ padding: 100 }}>
+        <Grid item xs={6} elevation={6} component={Paper} square style={{ padding: 100 }}>
           <div className={classes.paper}>
             {disable &&
               <form className={classes.form} noValidate>
