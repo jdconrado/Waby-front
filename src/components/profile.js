@@ -15,6 +15,9 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import Footer from './footer';
+import Backdrop from '@material-ui/core/Backdrop';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 function Copyright() {
   return (
@@ -57,15 +60,13 @@ const classes = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: '#fff',
+  },
 }));
-
-
-
-
-
-
 export default function Profile() {
-
+  const [circle, setCircle] = React.useState(true);
   const [name, setName] = React.useState("");
   const [lName, setLname] = React.useState("");
   const [email, setEmail] = React.useState("");
@@ -153,6 +154,7 @@ export default function Profile() {
         setName(res.result.name);
         setLname(res.result.lastname);
         setEmail(res.result.email);
+        setCircle(false);
       })
     })
 
@@ -176,19 +178,22 @@ export default function Profile() {
 
 
   return (
-    <div style={{ backgroundColor: '#AF67E6' }}>
+    <div style={{ flexGrow: 1 }}>
       <Header />
-      <Grid container component="main" className={classes.root} alignItems="center" >
+      <Backdrop className={classes.backdrop} open={circle}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
+      <Grid container component="main" className={classes.root} alignItems="center" z-index='0'>
         <CssBaseline />
-        <Grid item xs={6}>
-          <Box display="flex" justifyContent="center" >
-            <img src={require('../assests/Logo_white.png')} alt='c2' width='50%' height='50%' />
+        <Grid item xs={6} z-index='0'>
+          <Box display="flex" justifyContent="center" z-index='0'>
+            <img src={require('../assests/Waby_screenpurple.png')} alt='c2' width='80%' height='80%' z-index='0' />
           </Box>
         </Grid>
-        <Grid item xs={6} component={Paper} elevation={6} square style={{ padding: 100 }}>
+        <Grid item xs={6} elevation={6} square style={{ padding: 100 }}>
           <div className={classes.paper}>
             {disable &&
-              <form className={classes.form} noValidatek>
+              <form className={classes.form} noValidate>
                 <TextField
                   disabled
                   variant="outlined"
@@ -350,6 +355,7 @@ export default function Profile() {
           </div>
         </Grid>
       </Grid>
+      <Footer />
     </div >
   );
 }
