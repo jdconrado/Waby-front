@@ -86,6 +86,7 @@ export default function Historial() {
                     { title: 'Estado', field: 'estado' },
                     { title: 'Precio', field: 'precioTotal' }
                 ]}
+                style={{zIndex:-1}}
                 data={Information}
                 detailPanel={rowData => {
                     return (

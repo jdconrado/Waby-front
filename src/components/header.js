@@ -35,7 +35,7 @@ export default class Header extends React.Component {
             backdrop: {
                 zIndex: theme.zIndex.drawer + 1,
                 color: '#fff',
-              },
+            },
         }));
         this.logged = false
     }
@@ -60,7 +60,16 @@ export default class Header extends React.Component {
                     referrerPolicy: 'no-referrer'
                 }).then((res) => {
                     return res.json()
-                }).then((dat) => { this.setState({ id: dat.result, open:false }); console.log(dat); console.log(this.state.id) });
+                }).then((dat) => {
+                    if (dat.result != "Something went wrong") {
+                        this.setState({ id: dat.result, open: false });
+                        console.log(dat);
+                        console.log(this.state.id)
+                    } else {
+                        this.logged = false;
+                        localStorage.removeItem("id");
+                    }
+                });
             }
         }
 
@@ -103,7 +112,7 @@ export default class Header extends React.Component {
 
         return (
             <div style={{ flexGrow: 1 }}>
-                <Backdrop className={this.styles.backdrop} open={this.state.open} style={{zIndex: 3}}>
+                <Backdrop className={this.styles.backdrop} open={this.state.open} style={{ zIndex: 3 }}>
                     <CircularProgress color="inherit" />
                 </Backdrop>
                 <AppBar style={{ backgroundColor: '#AF67E6' }}>
