@@ -18,6 +18,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Footer from './footer';
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { positions } from '@material-ui/system';
 
 function Copyright() {
   return (
@@ -180,14 +181,14 @@ export default function Profile() {
   return (
     <div style={{ flexGrow: 1 }}>
       <Header />
-      <Backdrop className={classes.backdrop} open={circle}>
+      <Backdrop className={classes.backdrop} open={circle} style={{zIndex: 3}}>
         <CircularProgress color="inherit" />
       </Backdrop>
-      <Grid container component="main" className={classes.root} alignItems="center" z-index='0'>
+      <Grid container component="main" className={classes.root} alignItems="center">
         <CssBaseline />
-        <Grid item xs={6} z-index='0'>
-          <Box display="flex" justifyContent="center" z-index='0'>
-            <img src={require('../assests/Waby_screenpurple.png')} alt='c2' width='80%' height='80%' z-index='0' />
+        <Grid item xs={6} z-index='3'>
+          <Box display="flex" justifyContent="center">
+            <img src={require('../assests/Waby_screenpurple.png')} alt='c2' width='100%' height='80%' />
           </Box>
         </Grid>
         <Grid item xs={6} elevation={6} square style={{ padding: 100 }}>

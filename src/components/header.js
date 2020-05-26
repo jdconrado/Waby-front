@@ -103,7 +103,7 @@ export default class Header extends React.Component {
 
         return (
             <div style={{ flexGrow: 1 }}>
-                <Backdrop className={this.styles.backdrop} open={this.state.open}>
+                <Backdrop className={this.styles.backdrop} open={this.state.open} style={{zIndex: 3}}>
                     <CircularProgress color="inherit" />
                 </Backdrop>
                 <AppBar style={{ backgroundColor: '#AF67E6' }}>
