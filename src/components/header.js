@@ -1,6 +1,9 @@
 import React from 'react';
 import { AppBar, Toolbar, Button, Box } from '@material-ui/core';
 import { makeStyles } from "@material-ui/core/styles";
+import Backdrop from '@material-ui/core/Backdrop';
+import CircularProgress from '@material-ui/core/CircularProgress';
+
 async function url(url = '') {
     const response = await fetch(url, {
         method: 'POST', // *GET, POST, PUT, DELETE, etc.
@@ -21,21 +24,25 @@ export default class Header extends React.Component {
     constructor(props) {
         super(props);
         this.logOut = this.logOut.bind(this);
-        this.state = { id: -1 }
+        this.state = { id: -1, open: true }
         this.styles = makeStyles(theme => ({
             root: {
                 flexGrow: 1
             },
             bar: {
                 backgroundColor: '#AF67E6'
-            }
+            },
+            backdrop: {
+                zIndex: theme.zIndex.drawer + 1,
+                color: '#fff',
+              },
         }));
         this.logged = false
     }
     static defaultProps = {
     }
     componentDidMount() {
-        if (this.state.id ==-1){
+        if (this.state.id == -1) {
             console.log("DidMount");
             console.log(this.state.id);
             let token = localStorage.getItem("id");
@@ -53,15 +60,15 @@ export default class Header extends React.Component {
                     referrerPolicy: 'no-referrer'
                 }).then((res) => {
                     return res.json()
-                }).then((dat) => { this.setState({id: dat.result}) ; console.log(dat); console.log(this.state.id) });
+                }).then((dat) => { this.setState({ id: dat.result, open:false }); console.log(dat); console.log(this.state.id) });
             }
         }
-        
+
     }
-    
+
     logOut = () => {
         let token = localStorage.getItem("id");
-        url(`http://127.0.0.1:8000/usuarios/logout/${token}`).then((dat)=>{window.location.href="http://localhost:3000/"}).then(localStorage.removeItem("id"))
+        url(`http://127.0.0.1:8000/usuarios/logout/${token}`).then((dat) => { window.location.href = "http://localhost:3000/" }).then(localStorage.removeItem("id"))
     }
 
     render() {
@@ -96,6 +103,9 @@ export default class Header extends React.Component {
 
         return (
             <div style={{ flexGrow: 1 }}>
+                <Backdrop className={this.styles.backdrop} open={this.state.open}>
+                    <CircularProgress color="inherit" />
+                </Backdrop>
                 <AppBar style={{ backgroundColor: '#AF67E6' }}>
                     <Toolbar>
                         <Box edge='start' py='0.5rem' flexGrow={1} >

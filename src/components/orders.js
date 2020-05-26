@@ -381,7 +381,7 @@ export default function Orders() {
                 <ListItem >
                   <ListItemText
                     primary={info.nombre_ing}
-                    secondary={"precio: $" + info.precio + info.tipo + "\n Cantidad: " + info.stock} />
+                    secondary={"Precio: $" + info.precio + info.tipo + "\n Cantidad: " + info.stock} />
                   <ListItemSecondaryAction>
                     <Checkbox
                       edge="end"
