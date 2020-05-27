@@ -75,6 +75,7 @@ export default function Profile() {
   const [Message, setMessage] = React.useState("");
   const [isError, setisError] = React.useState(false);
   const [help, setHelp] = React.useState("");
+  const [is_staff, setIs_Staff] = React.useState(true);
 
   const datosName = (event) => {
     setName(event.target.value);
@@ -147,17 +148,31 @@ export default function Profile() {
     setDisable(false);
   };
 
+
   const [id, setId] = React.useState("");
   useEffect(() => {
     let token = localStorage.getItem("id");
     componentDidMount(`http://127.0.0.1:8000/usuarios/getid/${token}`, 'POST').then((res) => {
       setId(res.result); componentDidMount(`http://127.0.0.1:8000/usuarios/getUser/${res.result}`, 'GET').then((res) => {
+
         setName(res.result.name);
         setLname(res.result.lastname);
         setEmail(res.result.email);
+        setIs_Staff(res.result.staff);
+        if (res.result.staff == 'True') {
+          setIs_Staff(true);
+        } else {
+          setIs_Staff(false);
+        }
         setCircle(false);
+
       })
     })
+
+
+
+
+
 
   }, [null])
 
@@ -179,19 +194,19 @@ export default function Profile() {
 
 
   return (
-    <div style={{ backgroundColor: '#AF67E6'}}>
+    <div style={{ backgroundColor: '#F2F2F2' }}>
       <Header />
-      <Backdrop className={classes.backdrop} open={circle} style={{zIndex: 3}}>
+      <Backdrop className={classes.backdrop} open={circle} style={{ zIndex: 3 }}>
         <CircularProgress color="inherit" />
       </Backdrop>
       <Grid container component="main" className={classes.root} alignItems="center">
         <CssBaseline />
         <Grid item xs={6} z-index='3'>
           <Box display="flex" justifyContent="center" z-index='0'>
-            <img src={require('../assests/Waby_screenpurple.png')} alt='c2' width='100%' height='100%' z-index='0' />
+            <img src={require('../assests/Logo_white.png')} alt='c2' width='70%' height='70%' z-index='0' />
           </Box>
         </Grid>
-        <Grid item xs={6} elevation={6} component={Paper} square style={{ padding: 100 }}>
+        <Grid item xs={6} elevation={6} square style={{ padding: 100 }}>
           <div className={classes.paper}>
             {disable &&
               <form className={classes.form} noValidate>
@@ -241,7 +256,7 @@ export default function Profile() {
                 />
 
                 <Grid container component="main" className={classes.root} alignItems="center" >
-                  <Grid item xs={6}>
+                  <Grid item xs={4}>
                     <Button
                       variant="contained"
                       color="primary"
@@ -251,15 +266,30 @@ export default function Profile() {
                       Modificar información
                     </Button>
                   </Grid>
-                  <Grid item xs={6}>
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      className={classes.submit}
-                      href={`/user/${id}/historial`}
-                    >
-                      Historial de pedidos
+                  <Grid item xs={4}>
+                    {!is_staff &&
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        className={classes.submit}
+                        href={`/user/${id}/historial`}
+                      >
+                        Historial de pedidos
+                   </Button>}
+                  </Grid>
+                  <Grid item xs={4}>
+
+                    {!is_staff &&
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        className={classes.submit}
+                        href={`/user/${id}/pedidos`}
+                      >
+                        Seguimiento de pedidos
                    </Button>
+                    }
+
                   </Grid>
                 </Grid>
               </form>
@@ -311,7 +341,7 @@ export default function Profile() {
                 />
 
                 <Grid container component="main" className={classes.root} alignItems="center" >
-                  <Grid item xs={6}>
+                  <Grid item xs={4}>
                     <Button
                       variant="contained"
                       color="primary"
@@ -340,15 +370,29 @@ export default function Profile() {
                       </DialogActions>
                     </Dialog>
                   </Grid>
-                  <Grid item xs={6}>
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      className={classes.submit}
-                      href={`/user/${id}/historial`}
-                    >
-                      Historial de pedidos
-                   </Button>
+                  <Grid item xs={4}>
+                    {!is_staff &&
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        className={classes.submit}
+                        href={`/user/${id}/historial`}
+                      >
+                        Historial de pedidos
+                   </Button>}
+                  </Grid>
+                  <Grid item xs={4}>
+                    {!is_staff
+                      &&
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        className={classes.submit}
+                        href={`/user/${id}/pedidos`}
+                      >
+                        Seguimiento de pedidos
+                      </Button>
+                    }
                   </Grid>
                 </Grid>
               </form>

@@ -138,16 +138,16 @@ export default function SignIn() {
 
 
   return (
-    <div style={{ backgroundColor: '#AF67E6' }}>
+    <div style={{ backgroundColor: '#F2F2F2' }}>
       <Header />
       <Grid container component="main" className={classes.root} alignItems="center" >
         <CssBaseline />
         <Grid item xs={6}>
           <Box display="flex" justifyContent="center" >
-            <img src={require('../assests/Logo_white.png')} alt='c2' width='50%' height='50%' />
+            <img src={require('../assests/Logo_white.png')} alt='c2' width='70%' height='70%' />
           </Box>
         </Grid>
-        <Grid item xs={6} component={Paper} elevation={6} square style={{ padding: 60 }}>
+        <Grid item xs={6} elevation={6} square style={{ padding: 60 }}>
           <div className={classes.paper}>
             <Avatar className={classes.avatar}>
               <LockOutlinedIcon />

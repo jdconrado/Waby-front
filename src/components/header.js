@@ -24,7 +24,7 @@ export default class Header extends React.Component {
     constructor(props) {
         super(props);
         this.logOut = this.logOut.bind(this);
-        this.state = { id: -1, open: true }
+        this.state = { id: -1, open: true, isAdmin: false }
         this.styles = makeStyles(theme => ({
             root: {
                 flexGrow: 1
@@ -37,7 +37,7 @@ export default class Header extends React.Component {
                 color: '#fff',
             },
         }));
-        this.logged = false
+        this.logged = false;
     }
     static defaultProps = {
     }
@@ -62,16 +62,15 @@ export default class Header extends React.Component {
                     return res.json()
                 }).then((dat) => {
                     if (dat.result != "Something went wrong") {
-                        this.setState({ id: dat.result, open: false });
                         console.log(dat);
-                        console.log(this.state.id)
+                        this.setState({ id: dat.result, open: false, isAdmin: dat.admin });
                     } else {
                         this.logged = false;
                         localStorage.removeItem("id");
                     }
                 });
             } else {
-                this.setState({open:false})
+                this.setState({ open: false })
             }
         }
 
@@ -90,16 +89,22 @@ export default class Header extends React.Component {
             this.logged = false;
         } else {
             this.logged = true;
-
         }
-        if (this.logged) {
+        if (this.logged && this.state.isAdmin) {
+            buttons = [
+                [<Button className={this.styles.button} color='inherit' href="/">Inicio</Button>],
+                [<Button className={this.styles.button} color='inherit' href="/admin">Panel</Button>],
+                [<Button className={this.styles.button} color='inherit' href={`/user/${this.state.id}`}> PERFIL </Button>],
+                [<Button className={this.styles.button} color='inherit' onClick={this.logOut}>Cerrar sesión</Button>],
+            ]
+        } else if (this.logged && !this.state.isAdmin) {
             buttons = [
                 [<Button className={this.styles.button} color='inherit' href="/">Inicio</Button>],
                 [<Button className={this.styles.button} color='inherit' href="/orders">Pide aquí</Button>],
                 [<Button className={this.styles.button} color='inherit'>Conocenos</Button>],
-                [<Button className={this.styles.button} color='inherit' href={`/user/${this.state.id}`}>
-                    PERFIL </Button>],
+                [<Button className={this.styles.button} color='inherit' href={`/user/${this.state.id}`}> PERFIL </Button>],
                 [<Button className={this.styles.button} color='inherit' onClick={this.logOut}>Cerrar sesión</Button>],
+                
             ]
         } else {
             buttons = [

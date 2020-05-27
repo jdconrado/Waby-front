@@ -235,7 +235,7 @@ export default function Orders() {
             redirData('http://127.0.0.1:8000/ingredientes/actualizar/' + element.ingId, getIng(element.ingId, element.cantidad), 'PUT').then((data) => { });
           })
         }).then((data)=>{
-          window.location.href = 'http://127.0.0.1:3000/';
+          window.location.href = 'http://localhost:3000/';
         });
       }
     } else {
