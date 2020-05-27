@@ -92,7 +92,7 @@ export default function Admin() {
                 title="Lista de Ingredientes"
                 columns={columns.columns}
                 data={Information}
-                style={{zIndex:-1}}
+                style={{zIndex:0}}
                 editable={{
                     onRowAdd: (newData) =>
                         new Promise((resolve) => {

@@ -33,7 +33,7 @@ class AdminPage extends React.Component{
         let showComp = null;
         switch (this.state.selected) {
             case 1:
-                showComp = <Historial admin={true} ></Historial>;
+                showComp = <Historial/>;
                 break;
             case 2:
                 showComp = <Admin/>;

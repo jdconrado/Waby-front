@@ -25,56 +25,66 @@ async function getInfo(url = '', type) {
         } else {
             return res.json();
         }
-    }).then((dat) => { return dat.result });
+    }).then((dat) => { return dat });
     return response;
 }
 
-export default function Historial(props) {
+export default function Historial() {
     const [Information, setInformation] = React.useState([]); //Pedidos
     const [Lista, setLista] = React.useState();
     const [Ingredientes, setIngredientes] = React.useState([]);
+    const [columns, setState] = React.useState([
+        { title: 'Fecha', field: 'fecha_creado' },
+        { title: 'Estado', field: 'estado' },
+        { title: 'Precio', field: 'precioTotal' },
+    ])
     useEffect(() => {
-
         let token = localStorage.getItem("id");
-        getInfo('ingredientes/getall', 'GET').then((data) => {
-            setIngredientes(data);
-        })
-        var li = {};
-        if(props.admin){
-
-            getInfo('pedidos/getall', 'GET').then((data) => {
-                setInformation(data);
-                var i=0;
-                data.forEach(elemento => {
-                    getInfo('ingredientes/getlista/' + elemento.id, 'GET').then((data) => {
-                        li[i]=data;
-                        i++;
-                    }   )
-                })
+        getInfo('usuarios/getid/' + token, 'POST').then((data) => {
+            let id=data.result;
+            let isAdmin=data.admin
+            getInfo('ingredientes/getall', 'GET').then((data) => {
+                setIngredientes(data.result);
             })
-            
-            setLista(li);
-            
-        }else{
-            getInfo('usuarios/getid/' + token, 'POST').then((data) => {
-                getInfo('pedidos/getPedido/'+data, 'GET').then((data) => {
-                    setInformation(data);
-                    var i=0;
-                    data.forEach(elemento => {
+            var li = {};
+            if (isAdmin) {
+                setState([
+                    { title: 'Fecha', field: 'fecha_creado' },
+                    { title: 'Estado', field: 'estado' },
+                    { title: 'Precio', field: 'precioTotal' },
+                    { title: 'user ID', field: 'userId' }
+                ])
+                getInfo('pedidos/getall', 'GET').then((data) => {
+                    setInformation(data.result);
+                    var i = 0;
+                    data.result.forEach(elemento => {
                         getInfo('ingredientes/getlista/' + elemento.id, 'GET').then((data) => {
-                            li[i]=data;
+                            li[i] = data.result;
                             i++;
-                        }   )
+                        })
                     })
                 })
-                
+
                 setLista(li);
 
-            })
-        }
+            } else {
+                getInfo('pedidos/getPedido/' + id, 'GET').then((data) => {
+                    setInformation(data.result);
+                    var i = 0;
+                    data.result.forEach(elemento => {
+                        getInfo('ingredientes/getlista/' + elemento.id, 'GET').then((data) => {
+                            li[i] = data.result;
+                            i++;
+                        })
+                    })
+                })
+
+                setLista(li);
+            }
+        });
     }, [null])
     const getProp = (id, type) => {
-        var name="";
+        var name = "";
         Ingredientes.forEach(element => {
             if (element.id == id) {
                 if (type == 0) {
@@ -98,14 +108,11 @@ export default function Historial(props) {
             <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
             <MaterialTable
                 title="Historial"
-                columns={[
-                    { title: 'Fecha', field: 'fecha_creado' },
-                    { title: 'Estado', field: 'estado' },
-                    { title: 'Precio', field: 'precioTotal' }
-                ]}
-                style={{zIndex:-1}}
+                columns={columns}
+                style={{ zIndex: 0 }}
                 data={Information}
                 detailPanel={rowData => {
+                    console.log(Lista)
                     return (
                         <div>
                             <Table aria-label="simple table">
