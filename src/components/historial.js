@@ -6,7 +6,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Header from './header';
-async function getInfo(url = '', type) {
+async function getInfo(url = '', type, body) {
     const nurl = 'http://127.0.0.1:8000/' + url
     const response = await fetch(nurl, {
         method: type, // *GET, POST, PUT, DELETE, etc.
@@ -17,7 +17,8 @@ async function getInfo(url = '', type) {
             'Content-Type': 'application/json'
         },
         redirect: 'follow',
-        referrerPolicy: 'no-referrer'
+        referrerPolicy: 'no-referrer',
+        body: body
     }).then((res) => {
         if (typeof res == undefined) {
             var obj = "null"
@@ -41,18 +42,18 @@ export default function Historial() {
     useEffect(() => {
         let token = localStorage.getItem("id");
         getInfo('usuarios/getid/' + token, 'POST').then((data) => {
-            let id=data.result;
-            let isAdmin=data.admin
+            let id = data.result;
+            let isAdmin = data.admin
             getInfo('ingredientes/getall', 'GET').then((data) => {
                 setIngredientes(data.result);
             })
             var li = {};
             if (isAdmin) {
                 setState([
-                    { title: 'Fecha', field: 'fecha_creado' },
+                    { title: 'Fecha', field: 'fecha_creado', editable: 'never' },
                     { title: 'Estado', field: 'estado' },
-                    { title: 'Precio', field: 'precioTotal' },
-                    { title: 'user ID', field: 'userId' }
+                    { title: 'Precio', field: 'precioTotal', editable: 'never' },
+                    { title: 'user ID', field: 'userId', editable: 'never' }
                 ])
                 getInfo('pedidos/getall', 'GET').then((data) => {
                     setInformation(data.result);
@@ -83,6 +84,11 @@ export default function Historial() {
             }
         });
     }, [null])
+    const update = () => {
+        getInfo('pedidos/getall', 'GET').then((data) => {
+            setInformation(data.result)
+        })
+    }
     const getProp = (id, type) => {
         var name = "";
         Ingredientes.forEach(element => {
@@ -111,8 +117,32 @@ export default function Historial() {
                 columns={columns}
                 style={{ zIndex: 0 }}
                 data={Information}
+                editable={{
+                    onRowUpdate: (newData, oldData) =>
+                        new Promise((resolve) => {
+                            setTimeout(() => {
+                                resolve();
+                                if (oldData) {
+                                    var obj = {}
+                                    obj.estado = newData.estado
+                                    var js = JSON.stringify(obj);
+                                    getInfo('pedidos/actualizar/' + newData.id, 'POST', js).then((data) => {
+                                        update();
+                                        setInformation((prevState) => {
+                                            const data = [...prevState];
+                                            data[data.indexOf(oldData)] = newData;
+                                            return data;
+                                        });
+                                    });
+
+                                }
+                            }, 600);
+                        }),
+                }}
+                options={{
+                    actionsColumnIndex: -1
+                }}
                 detailPanel={rowData => {
-                    console.log(Lista)
                     return (
                         <div>
                             <Table aria-label="simple table">

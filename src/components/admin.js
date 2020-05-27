@@ -51,7 +51,7 @@ export default function Admin() {
         setDel(false);
         var js;
         pDelet.forEach(elemento => {
-            js=JSON.stringify(elemento);
+            js = JSON.stringify(elemento);
             redirData('eliminar/' + elemento.id, js, 'DELETE');
             setUpdate(update + 1);
         })
@@ -92,7 +92,7 @@ export default function Admin() {
                 title="Lista de Ingredientes"
                 columns={columns.columns}
                 data={Information}
-                style={{zIndex:0}}
+                style={{ zIndex: 0 }}
                 editable={{
                     onRowAdd: (newData) =>
                         new Promise((resolve) => {
@@ -178,8 +178,8 @@ export default function Admin() {
                 <DialogTitle id="alert-dialog-title">{"¡Cuidado!"}</DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
-                        Vas a eliminar {pDelet.length} ingrediente(s). 
-                        <br/>Si estas seguro, dale en aceptar!
+                        Vas a eliminar {pDelet.length} ingrediente(s).
+                        <br />Si estas seguro, dale en aceptar!
                 </DialogContentText>
                 </DialogContent>
                 <DialogActions>
