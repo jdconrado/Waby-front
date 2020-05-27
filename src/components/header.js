@@ -28,7 +28,7 @@ export default class Header extends React.Component {
                 flexGrow: 1
             },
             bar: {
-                backgroundColor: '#AF67E6'
+                backgroundColor: '#29F077'
             }
         }));
         this.logged = false
@@ -93,7 +93,7 @@ export default class Header extends React.Component {
 
         return (
             <div style={{ flexGrow: 1 }}>
-                <AppBar style={{ backgroundColor: '#AF67E6' }}>
+                <AppBar style={{ backgroundColor: '#29F077' }}>
                     <Toolbar>
                         <Box edge='start' py='0.5rem' flexGrow={1} >
                             <img src={require('../assests/Logo_white.png')} width='7%' height='7%' alt="logo" />
