@@ -30,10 +30,11 @@ async function getInfo(url = '', type, body) {
     return response;
 }
 
-export default function Historial() {
+export default function Historial(props) {
     const [Information, setInformation] = React.useState([]); //Pedidos
     const [Lista, setLista] = React.useState();
     const [Ingredientes, setIngredientes] = React.useState([]);
+    const [rowU, setRowU] = React.useState({});
     const [columns, setState] = React.useState([
         { title: 'Fecha', field: 'fecha_creado' },
         { title: 'Estado', field: 'estado' },
@@ -67,10 +68,44 @@ export default function Historial() {
                 })
 
                 setLista(li);
+                setRowU({
+                    onRowUpdate: (newData, oldData) =>
+                        new Promise((resolve) => {
+                            setTimeout(() => {
+                                resolve();
+                                if (oldData) {
+                                    var obj = {}
+                                    obj.estado = newData.estado
+                                    var js = JSON.stringify(obj);
+                                    getInfo('pedidos/actualizar/' + newData.id, 'POST', js).then((data) => {
+                                        update();
+                                        setInformation((prevState) => {
+                                            const data = [...prevState];
+                                            data[data.indexOf(oldData)] = newData;
+                                            return data;
+                                        });
+                                    });
 
+                                }
+                            }, 600);
+                        }),
+                })
             } else {
                 getInfo('pedidos/getPedido/' + id, 'GET').then((data) => {
-                    setInformation(data.result);
+                    let info = [];
+                    let tipo = props.staticContext;
+                    data.result.forEach(elemento => {
+                        if (tipo) {
+                            if (elemento.estado != "Finalizado") {
+                                info.push(elemento);
+                            }
+                        } else {    
+                            if (elemento.estado == "Finalizado") {
+                                info.push(elemento);
+                            }
+                        }
+                    })
+                    setInformation(info);
                     var i = 0;
                     data.result.forEach(elemento => {
                         getInfo('ingredientes/getlista/' + elemento.id, 'GET').then((data) => {
@@ -117,28 +152,7 @@ export default function Historial() {
                 columns={columns}
                 style={{ zIndex: 0 }}
                 data={Information}
-                editable={{
-                    onRowUpdate: (newData, oldData) =>
-                        new Promise((resolve) => {
-                            setTimeout(() => {
-                                resolve();
-                                if (oldData) {
-                                    var obj = {}
-                                    obj.estado = newData.estado
-                                    var js = JSON.stringify(obj);
-                                    getInfo('pedidos/actualizar/' + newData.id, 'POST', js).then((data) => {
-                                        update();
-                                        setInformation((prevState) => {
-                                            const data = [...prevState];
-                                            data[data.indexOf(oldData)] = newData;
-                                            return data;
-                                        });
-                                    });
-
-                                }
-                            }, 600);
-                        }),
-                }}
+                editable={rowU}
                 options={{
                     actionsColumnIndex: -1
                 }}
