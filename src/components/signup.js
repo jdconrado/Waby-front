@@ -13,6 +13,11 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Header from './header';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
 function Copyright() {
   return (
@@ -61,13 +66,17 @@ const useStyles = makeStyles((theme) => ({
 export default function SignUn() {
 
   const classes = useStyles();
-  
+
 
   const [name, setName] = React.useState("");
   const [lName, setLname] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
-
+  const [admin, setAdmin] = React.useState(false);
+  const [help, setHelp] = React.useState("");
+  const [op, setOp] = React.useState(false);
+  const [isError, setisError] = React.useState(false);
+  const [Message, setMessage] = React.useState("");
 
   const datosName = (event) => {
     setName(event.target.value);
@@ -77,25 +86,70 @@ export default function SignUn() {
   }
   const datosEmail = (event) => {
     setEmail(event.target.value);
+    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if (!re.test(event.target.value.toLowerCase())) {
+      setHelp("Formato de correo incorrecto.")
+      setisError(true);
+    } else {
+      setHelp("");
+      setisError(false);
+    }
   }
   const datosPw = (event) => {
     setPassword(event.target.value);
   }
-  const enviarDatos = () => {
+  const datosAdmin = (event) => {
+    setAdmin(event.target.value);
+  }
+  const handleClose = () =>{
+    setOp(false);
+  }
 
-    var obj = {};
-    obj.data = {};
-    obj.data.name = name;
-    obj.data.lastname = lName;
-    obj.data.email = email;
-    obj.data.password = password;
-    console.log(obj);
-    var js = JSON.stringify(obj);
-    var url = 'http://localhost:8000/usuarios/crear';
-    postData(url, js).then((response)=>{
-      localStorage.setItem('id',response.result);
-      window.location.href="http://localhost:3000"
-    });
+  const verificarTipo = () => {
+
+    if (admin) {
+      if (pwAdmin == "Waby2020") {
+        enviarDatos();
+      } else {
+        alert("Error, contraseña de administrador incorrecta");
+      }
+    } else {
+      enviarDatos();
+    }
+
+  }
+
+
+  const enviarDatos = () => {
+    if (name.length == 0 || lName.length == 0 || email.length == 0 || password.length == 0) {
+      setMessage("Rellena todos los campos");
+      setOp(true);
+    } else if (isError) {
+      setMessage("Ingresa el correo correctamente.");
+      setOp(true);
+    } else {
+      var obj = {};
+      obj.data = {};
+      obj.data.name = name;
+      obj.data.lastname = lName;
+      obj.data.email = email;
+      obj.data.password = password;
+      obj.data.tipo = admin;
+      var js = JSON.stringify(obj);
+      var url = 'http://localhost:8000/usuarios/crear';
+      postData(url, js).then((response) => {
+        if (response.status == "Error") {
+          if (response.details.includes("already exists")) {
+            alert("Ya esta en uso el correo electronico.")
+          } else {
+            alert(response.result);
+          }
+        } else {
+          localStorage.setItem('id', response.result);
+          window.location.href = "http://localhost:3000"
+        }
+      });
+    }
   }
   async function postData(url = '', data = {}) {
     const response = await fetch(url, {
@@ -116,7 +170,18 @@ export default function SignUn() {
 
   }
 
+  const [pwAdmin, setPwAdmin] = React.useState("");
+  const habilitarPw = (evt) => {
+    if (evt.target.checked) {
+      setAdmin(true);
+    } else {
+      setAdmin(false)
+    }
+  }
 
+  const datosPwAdmin = (evt) => {
+    setPwAdmin(evt.target.value);
+  }
 
   return (
     <div style={{ backgroundColor: '#AF67E6' }}>
@@ -144,7 +209,7 @@ export default function SignUn() {
                 fullWidth
                 onChange={(evt) => datosName(evt)}
                 id="fname"
-                label="First Name"
+                label="Nombre"
                 name="fname"
                 autoComplete="fname"
                 autoFocus
@@ -156,7 +221,7 @@ export default function SignUn() {
                 fullWidth
                 id="lname"
                 onChange={(evt) => datosLname(evt)}
-                label="Last Name"
+                label="Apellido"
                 name="lname"
                 autoComplete="lname"
 
@@ -165,10 +230,12 @@ export default function SignUn() {
                 variant="outlined"
                 margin="normal"
                 required
+                error={isError}
+                helperText={help}
                 fullWidth
                 id="email"
                 onChange={(evt) => datosEmail(evt)}
-                label="Email Address"
+                label="Correo electrónico"
                 name="email"
                 autoComplete="email"
 
@@ -179,23 +246,65 @@ export default function SignUn() {
                 required
                 fullWidth
                 name="password"
-                label="Password"
+                label="Contraseña"
                 onChange={(evt) => datosPw(evt)}
                 type="password"
                 id="password"
                 autoComplete="current-password"
               />
+
+              {admin &&
+                <TextField
+                  variant="outlined"
+                  margin="normal"
+                  required
+                  fullWidth
+                  name="password2"
+                  label="Contraseña de autorización"
+                  onChange={(evt) => datosPwAdmin(evt)}
+                  type="password"
+                  id="password2"
+                />
+
+              }
+
+              <FormControlLabel
+                value="top"
+                control={<Checkbox color="primary" />}
+                label="Registro como administrador"
+                labelPlacement="end"
+                onChange={(evt) => habilitarPw(evt)}
+              />
+
               <Button
 
                 fullWidth
                 variant="contained"
                 color="primary"
-                
-                onClick={enviarDatos}
-              
+
+                onClick={verificarTipo}
+
               >
                 Sign Up
             </Button>
+              <Dialog
+                open={op}
+                onClose={handleClose}
+                aria-labelledby="alert-dialog-slide-title"
+                aria-describedby="alert-dialog-slide-description"
+              >
+                <DialogTitle id="alert-dialog-slide-title">{"Advertencia"}</DialogTitle>
+                <DialogContent>
+                  <DialogContentText id="alert-dialog-slide-description">
+                    {Message}
+                  </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={handleClose} color="primary">
+                    Cerrar
+                  </Button>
+                </DialogActions>
+              </Dialog>
               <Grid container>
                 <Grid item>
                   <Link href="/login" variant="body2">

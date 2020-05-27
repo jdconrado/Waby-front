@@ -33,7 +33,6 @@ export default function Historial() {
     const [Information, setInformation] = React.useState([]); //Pedidos
     const [Lista, setLista] = React.useState();
     const [Ingredientes, setIngredientes] = React.useState([]);
-    const [id, setId] = React.useState();
     useEffect(() => {
 
         let token = localStorage.getItem("id");
@@ -87,6 +86,7 @@ export default function Historial() {
                     { title: 'Estado', field: 'estado' },
                     { title: 'Precio', field: 'precioTotal' }
                 ]}
+                style={{zIndex:-1}}
                 data={Information}
                 detailPanel={rowData => {
                     return (
