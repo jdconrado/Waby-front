@@ -70,6 +70,8 @@ export default class Header extends React.Component {
                         localStorage.removeItem("id");
                     }
                 });
+            } else {
+                this.setState({open:false})
             }
         }
 
