@@ -29,7 +29,7 @@ async function getInfo(url = '', type) {
     return response;
 }
 
-export default function Historial() {
+export default function Historial(props) {
     const [Information, setInformation] = React.useState([]); //Pedidos
     const [Lista, setLista] = React.useState();
     const [Ingredientes, setIngredientes] = React.useState([]);
@@ -40,8 +40,9 @@ export default function Historial() {
             setIngredientes(data);
         })
         var li = {};
-        getInfo('usuarios/getid/' + token, 'POST').then((data) => {
-            getInfo('pedidos/getPedido/'+data, 'GET').then((data) => {
+        if(props.admin){
+
+            getInfo('pedidos/getall', 'GET').then((data) => {
                 setInformation(data);
                 var i=0;
                 data.forEach(elemento => {
@@ -53,8 +54,24 @@ export default function Historial() {
             })
             
             setLista(li);
+            
+        }else{
+            getInfo('usuarios/getid/' + token, 'POST').then((data) => {
+                getInfo('pedidos/getPedido/'+data, 'GET').then((data) => {
+                    setInformation(data);
+                    var i=0;
+                    data.forEach(elemento => {
+                        getInfo('ingredientes/getlista/' + elemento.id, 'GET').then((data) => {
+                            li[i]=data;
+                            i++;
+                        }   )
+                    })
+                })
+                
+                setLista(li);
 
-        })
+            })
+        }
     }, [null])
     const getProp = (id, type) => {
         var name="";

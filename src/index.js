@@ -10,6 +10,7 @@ import Orders from './components/orders';
 import Admin from './components/admin';
 import Historial from './components/historial';
 import Profile from './components/profile';
+import AdminPage from './components/admin-page';
 
     
 
@@ -23,6 +24,7 @@ import Profile from './components/profile';
             <Route path="/admin/ingredientes" component={Admin}/>
             <Route exact path ="/user/:id" component={Profile}/>
             <Route exact path="/user/:id/historial" component={Historial} />
+            <Route path="/admin" component={AdminPage}/>
             
         </div> 
         </Router>
