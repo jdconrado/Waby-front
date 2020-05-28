@@ -136,7 +136,7 @@ export default function SignUn() {
       obj.data.password = password;
       obj.data.tipo = admin;
       var js = JSON.stringify(obj);
-      var url = 'http://localhost:8000/usuarios/crear';
+      var url = 'http://waby.tk/API/usuarios/crear';
       postData(url, js).then((response) => {
         if (response.status == "Error") {
           if (response.details.includes("already exists")) {
@@ -146,7 +146,7 @@ export default function SignUn() {
           }
         } else {
           localStorage.setItem('id', response.result);
-          window.location.href = "http://localhost:3000"
+          window.location.href = "http://waby.tk"
         }
       });
     }

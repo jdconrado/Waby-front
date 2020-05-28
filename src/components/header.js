@@ -47,7 +47,7 @@ export default class Header extends React.Component {
             console.log(this.state.id);
             let token = localStorage.getItem("id");
             if (token != null) {
-                const url = `http://127.0.0.1:8000/usuarios/getid/${token}`
+                const url = `http://waby.tk/API/usuarios/getid/${token}`
                 fetch(url, {
                     method: 'POST', // *GET, POST, PUT, DELETE, etc.
                     mode: 'cors',
@@ -78,7 +78,7 @@ export default class Header extends React.Component {
 
     logOut = () => {
         let token = localStorage.getItem("id");
-        url(`http://127.0.0.1:8000/usuarios/logout/${token}`).then((dat) => { window.location.href = "http://localhost:3000/" }).then(localStorage.removeItem("id"))
+        url(`http://waby.tk/API/usuarios/logout/${token}`).then((dat) => { window.location.href = "http://waby.tk" }).then(localStorage.removeItem("id"))
     }
 
     render() {

@@ -9,7 +9,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
 
 async function getInfo() {
-    const url = 'http://127.0.0.1:8000/ingredientes/getall'
+    const url = 'http://waby.tk/API/ingredientes/getall'
     const response = await fetch(url, {
         method: 'GET', // *GET, POST, PUT, DELETE, etc.
         mode: 'cors',
@@ -26,7 +26,7 @@ async function getInfo() {
     return response;
 }
 async function redirData(url = '', data = {}, type) {
-    const nurl = 'http://127.0.0.1:8000/ingredientes/' + url
+    const nurl = 'http://waby.tk/API/ingredientes/' + url
     const response = await fetch(nurl, {
         method: type, // *GET, POST, PUT, DELETE, etc.
         mode: 'cors',

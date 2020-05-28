@@ -106,13 +106,13 @@ export default function SignIn() {
       obj.data.email = email;
       obj.data.password = password;
       var js = JSON.stringify(obj);
-      var url = 'http://localhost:8000/usuarios/login';
+      var url = 'http://waby.tk/API/usuarios/login';
       sendData(url, js).then((response) => {
         if (response.status == "Error") {
           alert(response.result)
         } else {
           localStorage.setItem('id', response.result);
-          window.location.href = 'http://localhost:3000/';
+          window.location.href = 'http://waby.tk/';
         }
       });
     }

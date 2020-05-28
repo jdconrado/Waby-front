@@ -7,7 +7,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Header from './header';
 async function getInfo(url = '', type, body) {
-    const nurl = 'http://127.0.0.1:8000/' + url
+    const nurl = 'http://waby.tk/API/' + url
     const response = await fetch(nurl, {
         method: type, // *GET, POST, PUT, DELETE, etc.
         mode: 'cors',

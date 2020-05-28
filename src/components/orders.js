@@ -63,7 +63,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 async function getInfo(type, uurl = '') {
-  const url = 'http://127.0.0.1:8000/' + uurl
+  const url = 'http://waby.tk/API/' + uurl
   const response = await fetch(url, {
     method: type, // *GET, POST, PUT, DELETE, etc.
     mode: 'cors',
@@ -230,12 +230,12 @@ export default function Orders() {
       if (descripcion.length == 0) {
         setOp(true);
       } else {
-        redirData('http://127.0.0.1:8000/pedidos/crear', js, 'POST').then((data) => {
+        redirData('http://waby.tk/API/pedidos/crear', js, 'POST').then((data) => {
           obj.data.receta.forEach(element => {
-            redirData('http://127.0.0.1:8000/ingredientes/actualizar/' + element.ingId, getIng(element.ingId, element.cantidad), 'PUT').then((data) => { });
+            redirData('http://waby.tk/API/ingredientes/actualizar/' + element.ingId, getIng(element.ingId, element.cantidad), 'PUT').then((data) => { });
           })
         }).then((data)=>{
-          window.location.href = 'http://localhost:3000/';
+          window.location.href = 'http://waby.tk/';
         });
       }
     } else {

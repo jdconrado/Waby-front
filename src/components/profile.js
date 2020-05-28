@@ -113,7 +113,7 @@ export default function Profile() {
       obj.data.lastname = lName;
       obj.data.email = email;
       var js = JSON.stringify(obj);
-      var url = 'http://localhost:8000/usuarios/update/' + id;
+      var url = 'http://waby.tk/API/usuarios/update/' + id;
       updateData(url, js).then((data) => {
         alert(data.result);
       });
@@ -152,8 +152,8 @@ export default function Profile() {
   const [id, setId] = React.useState("");
   useEffect(() => {
     let token = localStorage.getItem("id");
-    componentDidMount(`http://127.0.0.1:8000/usuarios/getid/${token}`, 'POST').then((res) => {
-      setId(res.result); componentDidMount(`http://127.0.0.1:8000/usuarios/getUser/${res.result}`, 'GET').then((res) => {
+    componentDidMount(`http://waby.tk/API/usuarios/getid/${token}`, 'POST').then((res) => {
+      setId(res.result); componentDidMount(`http://waby.tk/API/usuarios/getUser/${res.result}`, 'GET').then((res) => {
 
         setName(res.result.name);
         setLname(res.result.lastname);
