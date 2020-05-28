@@ -12,6 +12,7 @@ import Historial from './components/historial';
 import Profile from './components/profile';
 import AdminPage from './components/admin-page';
 import Pedidos from './components/pedidos';
+import Conocenos from './components/conocenos';
 
     
 
@@ -27,6 +28,7 @@ import Pedidos from './components/pedidos';
             <Route exact path="/user/:id/historial" component={Historial} />
             <Route exact path="/user/:id/pedidos" component={Pedidos} />
             <Route path="/admin" component={AdminPage}/>
+            <Route path="/conocenos" component={Conocenos}/>
             
         </div> 
         </Router>

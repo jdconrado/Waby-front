@@ -101,7 +101,7 @@ export default class Header extends React.Component {
             buttons = [
                 [<Button className={this.styles.button} color='inherit' href="/">Inicio</Button>],
                 [<Button className={this.styles.button} color='inherit' href="/orders">Pide aquí</Button>],
-                [<Button className={this.styles.button} color='inherit'>Conocenos</Button>],
+                [<Button className={this.styles.button} color='inherit' href="/conocenos">Conocenos</Button>],
                 [<Button className={this.styles.button} color='inherit' href={`/user/${this.state.id}`}> PERFIL </Button>],
                 [<Button className={this.styles.button} color='inherit' onClick={this.logOut}>Cerrar sesión</Button>],
                 
@@ -110,7 +110,7 @@ export default class Header extends React.Component {
             buttons = [
                 [<Button className={this.styles.button} color='inherit' href="/">Inicio</Button>],
                 [<Button className={this.styles.button} color='inherit' href="/signup">Pide aquí</Button>],
-                [<Button className={this.styles.button} color='inherit'>Conocenos</Button>],
+                [<Button className={this.styles.button} color='inherit' href="/conocenos">Conocenos</Button>],
                 [<Button className={this.styles.button} color='inherit' href="/login">Log in</Button>],
                 [<Button className={this.styles.button} color='inherit' href="/signup">Sign up</Button>]
             ]
