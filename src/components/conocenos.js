@@ -24,12 +24,12 @@ const classes = makeStyles((theme) => ({
         height: '90vh',
     },
     image: {
-        backgroundImage: '../assests/Waby_screenpurple.png',
+        background: "url("+require('../assests/Waby_screenpurple.png')+")",
         backgroundRepeat: 'no-repeat',
-        backgroundColor:
-            theme.palette.type === 'light' ? theme.palette.grey[50] : theme.palette.grey[900],
         backgroundSize: 'cover',
         backgroundPosition: 'center',
+        width:"100%",
+        height:"25%"
     },
     paper: {
         display: 'flex',
@@ -57,6 +57,14 @@ export default function Conocenos() {
     return (
         <div style={{ backgroundColor: '#F2F2F2', position:'absolute', height:'100%', width:'100%'}}>
             <Header />
+            <div style={{
+                background:"url("+require('../assests/Waby_page3.png')+")",
+                backgroundRepeat: 'no-repeat',
+                backgroundSize: '100%',
+                backgroundPosition: 'center',
+                height:"300px",
+                marginTop:"0%"}}>
+            </div>
             <div justifyContent="center" style={{  height:'77%'}}>
                 <Grid container direction='column' alignItems='center' justifyContent="center">
                     <Grid>
