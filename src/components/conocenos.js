@@ -52,42 +52,38 @@ const classes = makeStyles((theme) => ({
         color: '#fff',
     },
 }));
+//height: '100vh'
 export default function Conocenos() {
     return (
-        <div style={{ backgroundColor: '#F2F2F2' }}>
+        <div style={{ backgroundColor: '#F2F2F2', position:'absolute', height:'100%', width:'100%'}}>
             <Header />
-            <div justifyContent="center">
+            <div justifyContent="center" style={{  height:'77%'}}>
                 <Grid container direction='column' alignItems='center' justifyContent="center">
                     <Grid>
                         <box>
-                            <Typography variant='h3'>
-                                ¿Quiénes somos?
-                            </Typography>
+                            <h1 style={{ textAlign: 'center' }}>¿Quiénes somos?</h1>
+
                         </box>
-                        <Typography variant='body1'>
-                            <p align="justify">
-                            Una empresa de desarrollo dedicada al servicio de pedidos de comida online
-                            </p>
-                        </Typography>
                     </Grid>
                     <Grid >
+                        <Typography variant='body1' textAlign='left'>
+                            <p>
+                                Una empresa de desarrollo dedicada al servicio de pedidos de comida online
+                            </p>
+                        </Typography>
                         <box>
-                            <Typography variant='h3'>
+                            <Typography variant='h6'>
                                 ¿Cómo funciona Waby?
                             </Typography>
                         </box>
-                        <Typography variant='body1' textAlign="left">
-                               <p textAlign="left">
-                                         Haciendo uso de una amigable interfaz, y gracias a los productos suministrados por una amplia gama 
-                                   <br/> de proveedores alrededor del territorio local en Waby te permitimos realizar pedidos personalizados, 
-                                   <br/> permitiendote seleccionar entre una gran cantidad de ingredientes! 
+                        <Typography variant='body1'>
+                            <p style={{ 'text-algin': 'justify' }}>
+                                Haciendo uso de una amigable interfaz, y gracias a los productos suministrados por una amplia gama
+                                   <br /> de proveedores alrededor del territorio local en Waby te permitimos realizar pedidos personalizados,
+                                   <br /> permitiendote seleccionar entre una gran cantidad de ingredientes!
                                 </p>
                         </Typography>
                     </Grid>
-                    
-
-
-
                 </Grid>
             </div>
             <Footer />
